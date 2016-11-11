@@ -2,8 +2,8 @@ package org.torquemada.q.controller.impl;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.torquemada.q.Config;
@@ -27,8 +27,10 @@ public class QEngine implements IEngine {
 
     private int selectedId;
     private boolean selectedToMove;
+    @Getter
     private int currentLevel;
-    private int row, col;
+    @Getter
+    private int rowAmount, colAmount;
     private int [] levelData;
 
     private ArrayList<Integer> balls = new ArrayList<>();
@@ -55,15 +57,15 @@ public class QEngine implements IEngine {
         clearLevel();
         Resources.LevelData data = Resources.getLevelData(currentLevel);
         levelData = data.levelData;
-        row = data.row;
-        col = data.col;
+        rowAmount = data.row;
+        colAmount = data.col;
 
         for (int i = 0; i < levelData.length; i++) {
             if (isBall(levelData[i])) balls.add(i);
             if (isLoose(levelData[i])) looses.add(i);
         }
 
-        board.assignLevel(data.number, row, col, levelData);
+        board.assignLevel(data.number, rowAmount, colAmount, levelData);
         selectedId = balls.get(0);
         notifySelect(selectedId);
     }
@@ -151,36 +153,36 @@ public class QEngine implements IEngine {
     @Override
     public void notifyLeft() {
         if (selectedToMove) {
-            roll(selectedId-1, i -> i / col == selectedId / col, i -> --i);
+            roll(selectedId-1, i -> i / colAmount == selectedId / colAmount, i -> --i);
         } else {
-            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, col, Direction.Left));
+            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, colAmount, Direction.Left));
         }
     }
 
     @Override
     public void notifyUp() {
         if (selectedToMove) {
-            roll(selectedId - col, i -> i >= 0, i -> i - col);
+            roll(selectedId - colAmount, i -> i >= 0, i -> i - colAmount);
         } else {
-            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, col, Direction.Up));
+            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, colAmount, Direction.Up));
         }
     }
 
     @Override
     public void notifyRight() {
         if (selectedToMove) {
-            roll(selectedId+1, i -> i / col == selectedId / col, i -> ++i);
+            roll(selectedId+1, i -> i / colAmount == selectedId / colAmount, i -> ++i);
         } else {
-            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, col, Direction.Right));
+            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, colAmount, Direction.Right));
         }
     }
 
     @Override
     public void notifyDown() {
         if (selectedToMove) {
-            roll(selectedId + col, i -> i < levelData.length, i -> i + col);
+            roll(selectedId + colAmount, i -> i < levelData.length, i -> i + colAmount);
         } else {
-            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, col, Direction.Down));
+            notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, colAmount, Direction.Down));
         }
     }
 

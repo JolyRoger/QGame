@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.controller.impl.QEngine;
+import org.torquemada.q.view.impl.Dynamic;
 import org.torquemada.q.view.impl.QLevel;
 import org.torquemada.q.view.impl.SettingsPanel;
 import org.torquemada.q.view.impl.squares.Ball;
@@ -23,7 +24,7 @@ public class Config {
 
     @Bean public IEngine engine() { return new QEngine(); }
 
-//    @Bean public IBoard board() { return new QBoard(); }
+    @Bean public Dynamic dynamic() { return new Dynamic(); }
 
     @Bean public SettingsPanel settingsPanel() { return new SettingsPanel(); }
 

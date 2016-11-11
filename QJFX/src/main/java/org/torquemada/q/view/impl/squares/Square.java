@@ -3,6 +3,8 @@ package org.torquemada.q.view.impl.squares;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import lombok.Getter;
+import org.torquemada.q.model.contract.ValidColor;
 import org.torquemada.q.view.contract.Resizable;
 
 /**
@@ -13,7 +15,9 @@ public abstract class Square extends /*ImageView*/ Pane implements Resizable {
 
     protected int width = 64;
     protected int height = 64;
-    protected int id;
+    @Getter
+    protected int row, col;
+
     protected ImageView image;
 
     public Square(String image) {
@@ -21,16 +25,12 @@ public abstract class Square extends /*ImageView*/ Pane implements Resizable {
         this.image = new ImageView(image);
         getChildren().add(this.image);
     }
-/*
 
-//    public Square() { }
-
-    public Square(String s) {
-        super(s);
+    public Square withAddress(int row, int col) {
+        this.row = row;
+        this.col = col;
+        return this;
     }
-*/
-
-    public Square withId(int id) { this.id = id; return this; }
 
     @Override
     public void recalculateHeight(Number newValue) {

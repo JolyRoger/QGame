@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 import org.torquemada.q.model.contract.SquareType;
@@ -21,7 +22,9 @@ public class QLevel extends Pane implements ILevel, Resizable {
     private int[] levelData;
     private Square[] squares;
     private GridPane staticField;
-    private Canvas dynamicField;
+
+    @Autowired
+    private Dynamic dynamicField;
 
     @Override
     public void setDimension(int row, int col) {
@@ -46,11 +49,11 @@ public class QLevel extends Pane implements ILevel, Resizable {
     public void init() {
         setStyle("-fx-background-color: 'lightgrey';");
         staticField = new GridPane();
-        dynamicField = new Canvas(384, 384);
+//        dynamicField = new Dynamic();
 
-        GraphicsContext g = dynamicField.getGraphicsContext2D();
-        g.setFill(Color.GREEN);
-        g.fillOval(384-50,384-50-29,50,50);
+//        GraphicsContext g = dynamicField.getGraphicsContext2D();
+//        g.setFill(Color.GREEN);
+//        g.fillOval(384-50,384-50-29,50,50);
 
         getChildren().add(staticField);
         getChildren().add(dynamicField);
@@ -59,30 +62,41 @@ public class QLevel extends Pane implements ILevel, Resizable {
 
         for (int i = 0; i < squares.length; i++) {
             squares[i] = create(i);
-            staticField.add(squares[i], i % col, i / col);
+            int squareCol = i % col;
+            int squareRow = i / col;
+            staticField.add(squares[i], squareCol, squareRow);
+            if (squares[i] instanceof Ball)
+                dynamicField.add((Ball)squares[i], squareCol, squareRow);
         }
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     private Square create(int i) {
         int id = levelData[i];
+        int col = i % this.col;
+        int row = i / this.col;
+
         SquareType type = SquareType.getType(id);
         switch (type) {
-            case empty : return empty().withId(i);
-            case solid : return solid().withId(i);
+            case empty : return empty().withAddress(col, row);
+            case solid : return solid().withAddress(col, row);
 
-            case redball: return ball().withColor(ValidColor.RED).withId(i);
-            case whiteball: return ball().withColor(ValidColor.WHITE).withId(i);
-            case yellowball: return ball().withColor(ValidColor.YELLOW).withId(i);
-            case orangeball: return ball().withColor(ValidColor.ORANGE).withId(i);
-            case blueball : return ball().withColor(ValidColor.BLUE).withId(i);
-            case greenball: return  ball().withColor(ValidColor.GREEN).withId(i);
+            case redball: return ball().withColor(ValidColor.RED).withAddress(col, row);
+            case whiteball: return ball().withColor(ValidColor.WHITE).withAddress(col, row);
+            case yellowball: return ball().withColor(ValidColor.YELLOW).withAddress(col, row);
+            case orangeball: return ball().withColor(ValidColor.ORANGE).withAddress(col, row);
+            case blueball : return ball().withColor(ValidColor.BLUE).withAddress(col, row);
+            case greenball: return  ball().withColor(ValidColor.GREEN).withAddress(col, row);
 
-            case redloose : return loose().withColor(ValidColor.RED).withId(i);
-            case whiteloose : return loose().withColor(ValidColor.WHITE).withId(i);
-            case yellowloose : return loose().withColor(ValidColor.YELLOW).withId(i);
-            case orangeloose : return loose().withColor(ValidColor.ORANGE).withId(i);
-            case blueloose : return loose().withColor(ValidColor.BLUE).withId(i);
-            case greenloose : return loose().withColor(ValidColor.GREEN).withId(i);
+            case redloose : return loose().withColor(ValidColor.RED).withAddress(col, row);
+            case whiteloose : return loose().withColor(ValidColor.WHITE).withAddress(col, row);
+            case yellowloose : return loose().withColor(ValidColor.YELLOW).withAddress(col, row);
+            case orangeloose : return loose().withColor(ValidColor.ORANGE).withAddress(col, row);
+            case blueloose : return loose().withColor(ValidColor.BLUE).withAddress(col, row);
+            case greenloose : return loose().withColor(ValidColor.GREEN).withAddress(col, row);
         }
         return empty();
     }
@@ -120,24 +134,17 @@ public class QLevel extends Pane implements ILevel, Resizable {
 
     @Override
     public void recalculateWidth(Number newValue) {
+        dynamicField.recalculateWidth(newValue);
         for (Node node : staticField.getChildren()) {
             ((Resizable) node).recalculateWidth(newValue.intValue() / col);
         }
-//        dynamicField.setWidth(newValue.doubleValue());
-//        GraphicsContext g = dynamicField.getGraphicsContext2D();
-//        g.setFill(Color.GREEN);
-//        g.fillOval(newValue.intValue()-50,newValue.intValue()-50-29,50,50);
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
+        dynamicField.recalculateHeight(newValue);
         for (Node node : staticField.getChildren()) {
             ((Resizable) node).recalculateHeight(newValue.intValue() / row);
         }
-//        dynamicField.setHeight(newValue.doubleValue());
-//        GraphicsContext g = dynamicField.getGraphicsContext2D();
-//        g.setFill(Color.GREEN);
-//        g.fillOval(newValue.intValue()-50,newValue.intValue()-50-29,50,50);
     }
-
 }

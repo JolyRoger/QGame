@@ -25,7 +25,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class QBoard extends Application implements IBoard {
+public class QBoard extends Application implements IBoard, Resizable {
 
     private static QBoard instance = null;
     private final static int SQUARE_SIZE = 64;
@@ -55,9 +55,8 @@ public class QBoard extends Application implements IBoard {
         root.setCenter((QLevel) level);
 
         Scene scene = new Scene(root, data.col * SQUARE_SIZE, data.row * SQUARE_SIZE);
-
-        scene.widthProperty().addListener((observable, oldValue, newValue) -> orderWidth(newValue/*, data.col*/));
-        scene.heightProperty().addListener((observable, oldValue, newValue) -> orderHeight(newValue.doubleValue() - settingsPanel.getHeight()/*, data.row*/));
+        scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue/*, data.col*/));
+        scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()/*, data.row*/));
 
         stage.setScene(scene);
         stage.show();
@@ -68,8 +67,8 @@ public class QBoard extends Application implements IBoard {
         level.setDimension(row, col);
         level.setLevelData(levelData);
         level.init();
-        orderWidth(SQUARE_SIZE * col);
-        orderHeight(SQUARE_SIZE * row);
+        recalculateWidth(SQUARE_SIZE * col);
+        recalculateHeight(SQUARE_SIZE * row);
 //        setTitle("Q-Game. Level " + number);
     }
 
@@ -115,12 +114,14 @@ public class QBoard extends Application implements IBoard {
         return instance;
     }
 
-    private void orderWidth(Number newValue) {
-        settingsPanel.recalculateWidth(newValue);
-        ((Resizable) level).recalculateWidth(newValue);
+    @Override
+    public void recalculateHeight(Number newValue) {
+        ((Resizable) level).recalculateHeight(newValue);
     }
 
-    private void orderHeight(Number newValue) {
-        ((Resizable) level).recalculateHeight(newValue);
+    @Override
+    public void recalculateWidth(Number newValue) {
+        settingsPanel.recalculateWidth(newValue);
+        ((Resizable) level).recalculateWidth(newValue);
     }
 }

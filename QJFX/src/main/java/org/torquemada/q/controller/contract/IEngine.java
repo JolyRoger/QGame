@@ -12,6 +12,10 @@ public interface IEngine {
     void notifyDown();
     void notifySpace();
 
+    int getRowAmount();
+    int getColAmount();
+    int getCurrentLevel();
+
     void reloadLevel();
     void loadLevel(int levelNumber);
 
