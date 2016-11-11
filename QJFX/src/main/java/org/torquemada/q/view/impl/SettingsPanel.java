@@ -1,18 +1,22 @@
 package org.torquemada.q.view.impl;
 
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.view.contract.ISettings;
+import org.torquemada.q.view.contract.Resizable;
 
 import javax.swing.*;
 
 /**
  * Created by torquemada on 31.10.16.
+ * Panel of controls to switch or reload level.
  */
-public class SettingsPanel extends BorderPane implements ISettings {
+public class SettingsPanel extends BorderPane implements ISettings, Resizable {
 
     private int levelNumber;
     private String[] levelModel;
@@ -58,5 +62,19 @@ public class SettingsPanel extends BorderPane implements ISettings {
     @Override
     public void setPrevLevelNumber() {
         setLevelNumber(levelNumber-1);
+    }
+
+    @Override
+    public void recalculateHeight(Number newValue) {
+
+    }
+
+    @Override
+    public void recalculateWidth(Number newValue) {
+        for (Node node : getChildren()) {
+            if (node != null && SET_LEVEL_ID.equals(node.getId())) {
+                ((Button) node).setPrefWidth(newValue.intValue());
+            }
+        }
     }
 }

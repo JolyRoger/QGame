@@ -1,6 +1,6 @@
 package org.torquemada.q.model.contract;
 
-import java.awt.*;
+import javafx.scene.paint.Color;
 
 /**
  * Created by torquemada on 6/2/16.
@@ -8,7 +8,7 @@ import java.awt.*;
 public enum ValidColor {
     BLUE, RED, WHITE, YELLOW, ORANGE, GREEN, ;
 
-    public Color getColor() {
+    public Color getPlatformColor() {
         switch (this) {
             case RED : return Color.RED;
             case WHITE : return Color.WHITE;
@@ -17,6 +17,6 @@ public enum ValidColor {
             case BLUE : return Color.BLUE;
             case GREEN : return Color.GREEN;
         }
-        return Color.LIGHT_GRAY;
+        return Color.LIGHTGRAY;
     }
 }

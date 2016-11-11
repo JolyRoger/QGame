@@ -1,13 +1,9 @@
 package org.torquemada.q.view.impl;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -15,17 +11,17 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 import org.torquemada.q.model.contract.SquareType;
 import org.torquemada.q.model.contract.ValidColor;
-import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.ILevel;
+import org.torquemada.q.view.contract.Resizable;
 import org.torquemada.q.view.impl.squares.*;
 
 @Component
-public class QLevel extends Pane implements ILevel {
+public class QLevel extends Pane implements ILevel, Resizable {
     int row, col;
     private int[] levelData;
     private Square[] squares;
-    private GridPane field;
-    private Canvas dynamic;
+    private GridPane staticField;
+    private Canvas dynamicField;
 
     @Override
     public void setDimension(int row, int col) {
@@ -48,22 +44,22 @@ public class QLevel extends Pane implements ILevel {
 
     @Override
     public void init() {
-        setStyle("-fx-background-color: DAE6F3;");
-        field = new GridPane();
-        dynamic = new Canvas(384, 384);
+        setStyle("-fx-background-color: 'lightgrey';");
+        staticField = new GridPane();
+        dynamicField = new Canvas(384, 384);
 
-        GraphicsContext g = dynamic.getGraphicsContext2D();
+        GraphicsContext g = dynamicField.getGraphicsContext2D();
         g.setFill(Color.GREEN);
         g.fillOval(384-50,384-50-29,50,50);
 
-        getChildren().add(field);
-        getChildren().add(dynamic);
+        getChildren().add(staticField);
+        getChildren().add(dynamicField);
 
         squares = new Square[levelData.length];
 
         for (int i = 0; i < squares.length; i++) {
             squares[i] = create(i);
-            field.add(squares[i], i % col, i / col);
+            staticField.add(squares[i], i % col, i / col);
         }
     }
 
@@ -123,20 +119,25 @@ public class QLevel extends Pane implements ILevel {
     }
 
     @Override
-    public void recalculateHeight(Number newValue) {
-        for (Node node : field.getChildren()) {
-            if (node instanceof ImageView) {
-                ((ImageView) node).setFitHeight(newValue.intValue() / row);
-            }
+    public void recalculateWidth(Number newValue) {
+        for (Node node : staticField.getChildren()) {
+            ((Resizable) node).recalculateWidth(newValue.intValue() / col);
         }
+//        dynamicField.setWidth(newValue.doubleValue());
+//        GraphicsContext g = dynamicField.getGraphicsContext2D();
+//        g.setFill(Color.GREEN);
+//        g.fillOval(newValue.intValue()-50,newValue.intValue()-50-29,50,50);
     }
 
     @Override
-    public void recalculateWidth(Number newValue) {
-        for (Node node : field.getChildren()) {
-            if (node instanceof ImageView) {
-                ((ImageView) node).setFitWidth(newValue.intValue() / col);
-            }
+    public void recalculateHeight(Number newValue) {
+        for (Node node : staticField.getChildren()) {
+            ((Resizable) node).recalculateHeight(newValue.intValue() / row);
         }
+//        dynamicField.setHeight(newValue.doubleValue());
+//        GraphicsContext g = dynamicField.getGraphicsContext2D();
+//        g.setFill(Color.GREEN);
+//        g.fillOval(newValue.intValue()-50,newValue.intValue()-50-29,50,50);
     }
+
 }

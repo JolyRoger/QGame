@@ -13,7 +13,4 @@ public interface ILevel {
     void removeBall(int from);
     boolean isReadyToMove(int selectedId);
     void clear();
-
-    void recalculateHeight(Number newValue);
-    void recalculateWidth(Number newValue);
 }

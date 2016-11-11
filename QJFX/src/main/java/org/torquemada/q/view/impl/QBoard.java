@@ -19,19 +19,17 @@ import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.ILevel;
+import org.torquemada.q.view.contract.Resizable;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class QBoard extends Application implements IBoard {
 
     private static QBoard instance = null;
     private final static int SQUARE_SIZE = 64;
     private Stage stage;
-
-    public QBoard() {
-        instance = this;
-        LATCH.countDown();
-    }
 
     @Setter
     @Autowired
@@ -108,9 +106,9 @@ public class QBoard extends Application implements IBoard {
                 Platform.exit();
                 System.exit(0);
         });
+        instance = this;
+        LATCH.countDown();
     }
-
-
 
     public static QBoard waitAndGetInstance() throws InterruptedException {
         LATCH.await();
@@ -118,14 +116,11 @@ public class QBoard extends Application implements IBoard {
     }
 
     private void orderWidth(Number newValue) {
-        for (Node node : settingsPanel.getChildren()) {
-            if (node != null && SettingsPanel.SET_LEVEL_ID.equals(node.getId())) {
-                ((Button) node).setPrefWidth(newValue.intValue());
-            }
-        }
-        level.recalculateWidth(newValue);
+        settingsPanel.recalculateWidth(newValue);
+        ((Resizable) level).recalculateWidth(newValue);
     }
+
     private void orderHeight(Number newValue) {
-        level.recalculateHeight(newValue);
+        ((Resizable) level).recalculateHeight(newValue);
     }
 }
