@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
 public class QBoard extends Application implements IBoard, Resizable {
 
     private static QBoard instance = null;
-    private final static int SQUARE_SIZE = 64;
+
     private Stage stage;
 
     @Setter
@@ -43,9 +43,10 @@ public class QBoard extends Application implements IBoard, Resizable {
         root.setTop(settingsPanel);
         root.setCenter((QLevel) level);
 
+// Magic number 29 means height of settingsPanel. It's 0 here in this method. Currently, I don't know how to calculate it.
         Scene scene = new Scene(root, data.col * SQUARE_SIZE, data.row * SQUARE_SIZE + 29);
-        scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue/*, data.col*/));
-        scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()/*, data.row*/));
+        scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue));
+        scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()));
 
         stage.setScene(scene);
         stage.show();
@@ -104,12 +105,12 @@ public class QBoard extends Application implements IBoard, Resizable {
     }
 
     @Override
-    public void recalculateHeight(Number newValue) {
-        ((Resizable) level).recalculateHeight(newValue);
+    public void recalculateWidth(Number newValue) {
+        ((Resizable) level).recalculateWidth(newValue);
     }
 
     @Override
-    public void recalculateWidth(Number newValue) {
-        ((Resizable) level).recalculateWidth(newValue);
+    public void recalculateHeight(Number newValue) {
+        ((Resizable) level).recalculateHeight(newValue);
     }
 }

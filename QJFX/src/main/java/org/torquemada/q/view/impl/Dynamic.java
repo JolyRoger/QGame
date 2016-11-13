@@ -3,6 +3,7 @@ package org.torquemada.q.view.impl;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
+import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.Resizable;
 import org.torquemada.q.view.impl.squares.Ball;
 import org.torquemada.q.view.impl.squares.Marble;
@@ -33,10 +34,12 @@ public class Dynamic extends Pane implements Resizable {
         setWidth(newValue.doubleValue());
         allBalls.forEach(ball -> {
             Marble marble = ball.getMarble();
-            double squareWidth = newValue.doubleValue() / engine.getColAmount();
+            int colAmount = engine.getColAmount();
+            double newDoubleValue = newValue.doubleValue();
+            double squareWidth = newDoubleValue / colAmount;
             double x = squareWidth * ball.getCol() + squareWidth / 2;
             marble.setLocation(x, marble.getLocation().y);
-            marble.setScaleX(newValue.doubleValue() / 384);
+            marble.setScaleX(newDoubleValue / (colAmount * IBoard.SQUARE_SIZE));
             marble.display();
         });
     }
@@ -46,10 +49,12 @@ public class Dynamic extends Pane implements Resizable {
         setHeight(newValue.doubleValue());
         allBalls.forEach(ball -> {
             Marble marble = ball.getMarble();
-            double squareHeight = newValue.doubleValue() / engine.getRowAmount();
+            int rowAmount = engine.getRowAmount();
+            double newDoubleValue = newValue.doubleValue();
+            double squareHeight = newDoubleValue / rowAmount;
             double y = squareHeight * ball.getRow() + squareHeight / 2;
             marble.setLocation(marble.getLocation().x, y);
-            marble.setScaleY(newValue.doubleValue() / 384);
+            marble.setScaleY(newDoubleValue / (rowAmount * IBoard.SQUARE_SIZE));
             marble.display();
         });
     }

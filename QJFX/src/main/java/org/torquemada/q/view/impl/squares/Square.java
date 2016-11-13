@@ -9,10 +9,8 @@ import org.torquemada.q.view.contract.Resizable;
  * Created by torquemada on 5/28/16.
  * This class represents a game cell.
  */
-public abstract class Square extends /*ImageView*/ Pane implements Resizable {
+public abstract class Square extends Pane implements Resizable {
 
-    protected int width = 64;
-    protected int height = 64;
     @Getter
     protected int row, col;
 
