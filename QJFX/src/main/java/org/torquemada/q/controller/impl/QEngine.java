@@ -22,6 +22,7 @@ import java.util.function.IntUnaryOperator;
 
 /**
  * Created by torquemada on 6/2/16.
+ * Engine of the game. Calculates and manages it.
  */
 public class QEngine implements IEngine {
 
@@ -187,8 +188,6 @@ public class QEngine implements IEngine {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Resources.loadResources();
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 
         new Thread("Run QGame") {
             @Override
@@ -198,6 +197,9 @@ public class QEngine implements IEngine {
         }.start();
 
         QBoard board = QBoard.waitAndGetInstance();
+        Resources.loadResources();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+
         board.setLevel(context.getBean(ILevel.class));
         board.setSettingsPanel(context.getBean(SettingsPanel.class));
         board.setEngine(context.getBean(IEngine.class));

@@ -1,12 +1,8 @@
 package org.torquemada.q.view.impl;
 
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
@@ -49,11 +45,6 @@ public class QLevel extends Pane implements ILevel, Resizable {
     public void init() {
         setStyle("-fx-background-color: 'lightgrey';");
         staticField = new GridPane();
-//        dynamicField = new Dynamic();
-
-//        GraphicsContext g = dynamicField.getGraphicsContext2D();
-//        g.setFill(Color.GREEN);
-//        g.fillOval(384-50,384-50-29,50,50);
 
         getChildren().add(staticField);
         getChildren().add(dynamicField);
@@ -66,12 +57,8 @@ public class QLevel extends Pane implements ILevel, Resizable {
             int squareRow = i / col;
             staticField.add(squares[i], squareCol, squareRow);
             if (squares[i] instanceof Ball)
-                dynamicField.add((Ball)squares[i], squareCol, squareRow);
+                dynamicField.add((Ball)squares[i]);
         }
-
-        System.out.println();
-        System.out.println();
-        System.out.println();
     }
 
     private Square create(int i) {

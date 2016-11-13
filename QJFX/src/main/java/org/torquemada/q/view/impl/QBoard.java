@@ -2,15 +2,7 @@ package org.torquemada.q.view.impl;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.Setter;
@@ -20,10 +12,7 @@ import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.ILevel;
 import org.torquemada.q.view.contract.Resizable;
-
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class QBoard extends Application implements IBoard, Resizable {
 
@@ -54,7 +43,7 @@ public class QBoard extends Application implements IBoard, Resizable {
         root.setTop(settingsPanel);
         root.setCenter((QLevel) level);
 
-        Scene scene = new Scene(root, data.col * SQUARE_SIZE, data.row * SQUARE_SIZE);
+        Scene scene = new Scene(root, data.col * SQUARE_SIZE, data.row * SQUARE_SIZE + 29);
         scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue/*, data.col*/));
         scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()/*, data.row*/));
 
@@ -121,7 +110,6 @@ public class QBoard extends Application implements IBoard, Resizable {
 
     @Override
     public void recalculateWidth(Number newValue) {
-        settingsPanel.recalculateWidth(newValue);
         ((Resizable) level).recalculateWidth(newValue);
     }
 }

@@ -1,10 +1,8 @@
 package org.torquemada.q.view.impl.squares;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
-import org.torquemada.q.model.contract.ValidColor;
 import org.torquemada.q.view.contract.Resizable;
 
 /**
@@ -34,13 +32,11 @@ public abstract class Square extends /*ImageView*/ Pane implements Resizable {
 
     @Override
     public void recalculateHeight(Number newValue) {
-//        setHeight(newValue.doubleValue());
         image.setFitHeight(newValue.doubleValue());
     }
 
     @Override
     public void recalculateWidth(Number newValue) {
-//        setWidth(newValue.doubleValue());
         image.setFitWidth(newValue.doubleValue());
     }
 }
