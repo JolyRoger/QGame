@@ -5,12 +5,12 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import org.torquemada.javafx.move.Sprite;
 import org.torquemada.javafx.move.Vector2D;
-import org.torquemada.javafx.sample.Layer;
 
 /**
  * Created by torquemada on 13.11.16.
@@ -18,7 +18,7 @@ import org.torquemada.javafx.sample.Layer;
  */
 public class Marble extends Sprite {
 
-    public Marble(Layer layer, Color color) {
+    public Marble(Pane layer, Color color) {
         super(layer, new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0), 50, 50, color);
     }
 
