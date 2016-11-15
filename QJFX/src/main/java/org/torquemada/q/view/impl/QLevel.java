@@ -60,7 +60,7 @@ public class QLevel extends Pane implements ILevel, Resizable {
                 dynamicField.add((Ball)squares[i]);
         }
     }
-
+// TODO
     private Square create(int i) {
         int id = levelData[i];
         int col = i % this.col;

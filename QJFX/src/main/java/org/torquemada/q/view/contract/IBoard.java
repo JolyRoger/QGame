@@ -5,7 +5,7 @@ package org.torquemada.q.view.contract;
  * Interface of game board. Size constants.
  */
 public interface IBoard {
-    int SQUARE_SIZE = 82;
+    int SQUARE_SIZE = 64;
     float MARBLE_FACTOR = 1.28f;
     float MARBLE_SIZE = SQUARE_SIZE / MARBLE_FACTOR;
 
