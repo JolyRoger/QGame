@@ -11,6 +11,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import org.torquemada.javafx.move.Sprite;
 import org.torquemada.javafx.move.Vector2D;
+import org.torquemada.q.view.contract.IBoard;
 
 /**
  * Created by torquemada on 13.11.16.
@@ -19,16 +20,17 @@ import org.torquemada.javafx.move.Vector2D;
 public class Marble extends Sprite {
 
     public Marble(Pane layer, Color color) {
-        super(layer, new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0), 50, 50, color);
+        super(layer, new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0),
+                IBoard.MARBLE_SIZE, IBoard.MARBLE_SIZE, color);
     }
 
     @Override
     public Node createView(Paint color) {
-        return new ImageView(createMarbleImage(50d, color));
+        return new ImageView(createMarbleImage(IBoard.MARBLE_SIZE, color));
     }
 
     private Image createMarbleImage(double radius, Paint fill) {
-        Circle circle = new Circle(24d, Color.CHOCOLATE);
+        Circle circle = new Circle(radius/2-1, Color.CHOCOLATE);
         circle.setStroke(Color.BLACK);
         circle.setFill(fill);
 
