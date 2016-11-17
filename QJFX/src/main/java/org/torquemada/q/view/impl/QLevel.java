@@ -5,10 +5,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.torquemada.q.model.contract.SquareType;
 import org.torquemada.q.model.contract.ValidColor;
 import org.torquemada.q.view.contract.ILevel;
+import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.Resizable;
 import org.torquemada.q.view.impl.squares.*;
 
@@ -17,10 +19,12 @@ public class QLevel extends Pane implements ILevel, Resizable {
     int row, col;
     private int[] levelData;
     private Square[] squares;
-    private GridPane staticField;
 
-    @Autowired
-    private Dynamic dynamicField;
+    @Autowired @Qualifier("staticField")
+    private /*GridPane*/IParent staticField;
+
+    @Autowired @Qualifier("dynamicField")
+    private /*Dynamic*/ IParent dynamicField;
 
     @Override
     public void setDimension(int row, int col) {
@@ -44,20 +48,22 @@ public class QLevel extends Pane implements ILevel, Resizable {
     @Override
     public void init() {
         setStyle("-fx-background-color: 'lightgrey';");
-        staticField = new GridPane();
 
-        getChildren().add(staticField);
-        getChildren().add(dynamicField);
+        getChildren().add(staticField.getContainer());
+        getChildren().add(dynamicField.getContainer());
 
         squares = new Square[levelData.length];
 
         for (int i = 0; i < squares.length; i++) {
             squares[i] = create(i);
-            int squareCol = i % col;
-            int squareRow = i / col;
-            staticField.add(squares[i], squareCol, squareRow);
-            if (squares[i] instanceof Ball)
-                dynamicField.add((Ball)squares[i]);
+//            int squareCol = i % col;
+//            int squareRow = i / col;
+
+            squares[i].setToParent();
+
+//            staticField.add(squares[i], squareCol, squareRow);
+//            if (squares[i] instanceof Ball)
+//                dynamicField.add((Ball)squares[i]);
         }
     }
 // TODO
@@ -122,16 +128,19 @@ public class QLevel extends Pane implements ILevel, Resizable {
     @Override
     public void recalculateWidth(Number newValue) {
         dynamicField.recalculateWidth(newValue);
-        for (Node node : staticField.getChildren()) {
-            ((Resizable) node).recalculateWidth(newValue.intValue() / col);
-        }
+        staticField.recalculateWidth(newValue);
+
+//        for (Node node : staticField.getChildren()) {
+//            ((Resizable) node).recalculateWidth(newValue.intValue() / col);
+//        }
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
         dynamicField.recalculateHeight(newValue);
-        for (Node node : staticField.getChildren()) {
-            ((Resizable) node).recalculateHeight(newValue.intValue() / row);
-        }
+        staticField.recalculateHeight(newValue);
+//        for (Node node : staticField.getChildren()) {
+//            ((Resizable) node).recalculateHeight(newValue.intValue() / row);
+//        }
     }
 }

@@ -3,14 +3,15 @@ package org.torquemada.q.view.impl.squares;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import org.torquemada.q.model.contract.ValidColor;
+import org.torquemada.q.view.contract.IParent;
 
 public class Loose extends ColorfulSquare {
 
     private GraphicsContext g;
     private Canvas canvas;
 
-    public Loose(/*ValidColor color*/) {
-        super("/empty.png");
+    public Loose(IParent pane) {
+        super("/empty.png", pane);
         canvas = new Canvas();
         g = canvas.getGraphicsContext2D();
         getChildren().add(canvas);
@@ -19,7 +20,6 @@ public class Loose extends ColorfulSquare {
 
     @Override
     public Loose withColor(ValidColor color) {
-//        g = canvas.getGraphicsContext2D();
         g.setFill(color.getPlatformColor());
         return (Loose) super.withColor(color);
     }

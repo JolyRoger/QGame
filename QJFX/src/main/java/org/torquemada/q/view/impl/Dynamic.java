@@ -4,9 +4,12 @@ import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.view.contract.IBoard;
+import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.Resizable;
 import org.torquemada.q.view.impl.squares.Ball;
 import org.torquemada.q.view.impl.squares.Marble;
+import org.torquemada.q.view.impl.squares.Square;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +17,9 @@ import java.util.List;
  * Created by torquemada on 11.11.16.
  * This is a panel for move ball and other effects.
  */
-public class Dynamic extends Pane implements Resizable {
+public class Dynamic implements IParent {
+
+    private Pane dynamicField;
 
     private List<Ball> allBalls;
     @Autowired
@@ -23,15 +28,12 @@ public class Dynamic extends Pane implements Resizable {
     public Dynamic() {
         super();
         allBalls = new ArrayList<>();
-    }
-
-    public void add(Ball ball) {
-        allBalls.add(ball);
+        dynamicField = new Pane();
     }
 
     @Override
     public void recalculateWidth(Number newValue) {
-        setWidth(newValue.doubleValue());
+        dynamicField.setPrefWidth(newValue.doubleValue());      // FIXME: -> Pref
         allBalls.forEach(ball -> {
             Marble marble = ball.getMarble();
             int colAmount = engine.getColAmount();
@@ -46,7 +48,7 @@ public class Dynamic extends Pane implements Resizable {
 
     @Override
     public void recalculateHeight(Number newValue) {
-        setHeight(newValue.doubleValue());
+        dynamicField.setPrefHeight(newValue.doubleValue());
         allBalls.forEach(ball -> {
             Marble marble = ball.getMarble();
             int rowAmount = engine.getRowAmount();
@@ -58,4 +60,15 @@ public class Dynamic extends Pane implements Resizable {
             marble.display();
         });
     }
+
+    @Override
+    public Pane getContainer() {
+        return dynamicField;
+    }
+
+    @Override
+    public void add(Square ball) {
+        allBalls.add((Ball) ball);
+    }
+
 }

@@ -1,10 +1,8 @@
 package org.torquemada.q.view.impl.squares;
 
-
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import lombok.Getter;
 import org.torquemada.q.model.contract.ValidColor;
+import org.torquemada.q.view.contract.IParent;
 
 /**
  * Created by torquemada on 5/29/16.
@@ -15,8 +13,8 @@ public abstract class ColorfulSquare extends Square {
     @Getter
     protected ValidColor color;
 
-    public ColorfulSquare(String image) {
-        super(image);
+    public ColorfulSquare(String image, IParent pane) {
+        super(image, pane);
     }
 
     @Override
