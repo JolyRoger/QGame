@@ -14,7 +14,6 @@ import javafx.scene.shape.Circle;
 import org.torquemada.javafx.move.Sprite;
 import org.torquemada.javafx.move.Vector2D;
 import org.torquemada.q.view.contract.IBoard;
-import org.torquemada.q.view.contract.IParent;
 
 /**
  * Created by torquemada on 13.11.16.
@@ -23,10 +22,10 @@ import org.torquemada.q.view.contract.IParent;
 public class Marble extends Sprite {
 
     private Canvas sf;
-    private boolean selected = true;
+    private boolean selected;
 
-    public Marble(IParent layer, Color color) {
-        super(layer.getContainer(), new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0),
+    public Marble(/*IParent layer, */Color color) {
+        super(/*layer.getContainer(), */new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0),
                 IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE, color);
     }
 
@@ -43,7 +42,7 @@ public class Marble extends Sprite {
         ImageView img = new ImageView(createMarbleImage(IBoard.MARBLE_SIZE, color));
         img.setX(location);
         img.setY(location);
-
+        select(false);
 /*
         Rectangle rect = new Rectangle(IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE, Color.TRANSPARENT);
         rect.setStrokeWidth(5);

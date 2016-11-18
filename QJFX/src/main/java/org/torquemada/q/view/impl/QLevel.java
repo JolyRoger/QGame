@@ -1,7 +1,5 @@
 package org.torquemada.q.view.impl;
 
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
@@ -21,10 +19,10 @@ public class QLevel extends Pane implements ILevel, Resizable {
     private Square[] squares;
 
     @Autowired @Qualifier("staticField")
-    private /*GridPane*/IParent staticField;
+    private IParent staticField;
 
     @Autowired @Qualifier("dynamicField")
-    private /*Dynamic*/ IParent dynamicField;
+    private IParent dynamicField;
 
     @Override
     public void setDimension(int row, int col) {
@@ -56,14 +54,7 @@ public class QLevel extends Pane implements ILevel, Resizable {
 
         for (int i = 0; i < squares.length; i++) {
             squares[i] = create(i);
-//            int squareCol = i % col;
-//            int squareRow = i / col;
-
             squares[i].setToParent();
-
-//            staticField.add(squares[i], squareCol, squareRow);
-//            if (squares[i] instanceof Ball)
-//                dynamicField.add((Ball)squares[i]);
         }
     }
 // TODO
@@ -129,18 +120,11 @@ public class QLevel extends Pane implements ILevel, Resizable {
     public void recalculateWidth(Number newValue) {
         dynamicField.recalculateWidth(newValue);
         staticField.recalculateWidth(newValue);
-
-//        for (Node node : staticField.getChildren()) {
-//            ((Resizable) node).recalculateWidth(newValue.intValue() / col);
-//        }
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
         dynamicField.recalculateHeight(newValue);
         staticField.recalculateHeight(newValue);
-//        for (Node node : staticField.getChildren()) {
-//            ((Resizable) node).recalculateHeight(newValue.intValue() / row);
-//        }
     }
 }

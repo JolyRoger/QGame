@@ -10,6 +10,7 @@ import org.torquemada.q.view.impl.squares.Square;
 
 /**
  * Created by torquemada on 17.11.16.
+ * Static fields: looses, walls, and game field.
  */
 public class Static implements IParent {
 

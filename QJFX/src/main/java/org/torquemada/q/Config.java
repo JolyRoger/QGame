@@ -21,6 +21,7 @@ import org.torquemada.q.view.impl.squares.Solid;
 
 /**
  * Created by torquemada on 6/2/16.
+ * Java Spring configuration class.
  */
 @Configuration
 @ComponentScan(basePackageClasses = QLevel.class)

@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 
 /**
  * Created by torquemada on 6/2/16.
+ * Possible colors of game marbles and looses.
  */
 public enum ValidColor {
     BLUE, RED, WHITE, YELLOW, ORANGE, GREEN, ;

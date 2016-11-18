@@ -3,7 +3,7 @@ package org.torquemada.q.view.impl.squares;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
-import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.Resizable;
 
@@ -17,6 +17,8 @@ public abstract class Square extends Pane implements Resizable {
     protected int row, col;
     protected IParent parent;
     protected ImageView image;
+    @Autowired
+    private IParent staticField;
 
     public Square(String image, IParent pane) {
         super();
@@ -42,6 +44,6 @@ public abstract class Square extends Pane implements Resizable {
     }
 
     public void setToParent() {
-        parent.add(this);
+        staticField.add(this);
     }
 }

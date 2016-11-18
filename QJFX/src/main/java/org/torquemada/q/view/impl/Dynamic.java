@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.IParent;
-import org.torquemada.q.view.contract.Resizable;
 import org.torquemada.q.view.impl.squares.Ball;
 import org.torquemada.q.view.impl.squares.Marble;
 import org.torquemada.q.view.impl.squares.Square;
@@ -68,7 +67,7 @@ public class Dynamic implements IParent {
 
     @Override
     public void add(Square ball) {
+        dynamicField.getChildren().add(((Ball)ball).getMarble());
         allBalls.add((Ball) ball);
     }
-
 }

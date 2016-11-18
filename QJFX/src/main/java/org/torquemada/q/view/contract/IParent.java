@@ -5,6 +5,7 @@ import org.torquemada.q.view.impl.squares.Square;
 
 /**
  * Created by torquemada on 17.11.16.
+ * Parent interface for component containing game elements
  */
 public interface IParent extends Resizable {
     Pane getContainer();

@@ -2,6 +2,7 @@ package org.torquemada.q.view.contract;
 
 /**
  * Created by torquemada on 6/2/16.
+ * Common level interface.
  */
 public interface ILevel {
     void setDimension(int row, int col);
