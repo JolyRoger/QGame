@@ -3,9 +3,10 @@ package org.torquemada.q.view.impl.squares;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import org.torquemada.q.model.contract.ValidColor;
+import org.torquemada.q.view.contract.IColor;
 import org.torquemada.q.view.contract.IParent;
 
-public class Loose extends ColorfulSquare {
+public class Loose extends Square implements IColor {
 
     private GraphicsContext g;
     private Canvas canvas;
@@ -21,7 +22,7 @@ public class Loose extends ColorfulSquare {
     @Override
     public Loose withColor(ValidColor color) {
         g.setFill(color.getPlatformColor());
-        return (Loose) super.withColor(color);
+        return this;
     }
 
     @Override
