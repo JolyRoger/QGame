@@ -9,6 +9,8 @@ import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.impl.squares.Square;
 
+import java.util.List;
+
 /**
  * Created by torquemada on 17.11.16.
  * Static fields: looses, walls, and game field.
@@ -29,10 +31,8 @@ public class Static implements IParent {
     }
 
     @Override
-    public void add(IChild... sq) {
-        for (IChild square : sq) {
-            staticField.add(square.view(), square.getCol(), square.getRow());
-        }
+    public void add(List<? extends IChild> children) {
+        children.forEach(square -> staticField.add(square.view(), square.getCol(), square.getRow()));
     }
 
     @Override

@@ -38,11 +38,13 @@ public class Config {
 
     @Bean @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Empty ball() { return new Empty(staticField()); }
-//    public Ball ball() { return new Ball(dynamicField()); }
 
     @Bean @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Loose loose() { return new Loose(staticField()); }
 
     @Bean @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Marble marble() { return new Marble(); }
+
+    @Bean
+    public SelectingFrame frame() { return new SelectingFrame(); }
 }

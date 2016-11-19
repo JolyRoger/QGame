@@ -25,28 +25,23 @@ import org.torquemada.q.view.contract.*;
  */
 public class Marble extends Sprite implements IChild, IColor {
 
-    private Canvas sf;
     private boolean selected;
     @Getter
     private int col, row;
-    private Square square;
     @Autowired
     private IEngine engine;
+    @Autowired
+    private SelectingFrame frame;
 
     public Marble() {
         super(new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0),
-                (double)IBoard.SQUARE_SIZE, (double)IBoard.SQUARE_SIZE/*, color*/);
+                IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE);
     }
 
     @Override
     public Node createView(Paint color) {
         double location = (IBoard.SQUARE_SIZE - IBoard.MARBLE_SIZE) / 2;
 
-        sf = new Canvas(IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE);
-        GraphicsContext g = sf.getGraphicsContext2D();
-        g.setLineWidth(10);
-        g.setStroke(Color.RED);
-        g.strokeRoundRect(0,0,IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE, 25, 25);
 
         ImageView img = new ImageView(createMarbleImage(IBoard.MARBLE_SIZE, color));
         img.setX(location);
@@ -60,7 +55,7 @@ public class Marble extends Sprite implements IChild, IColor {
         rect.setStroke(Color.GREEN);
 */
 
-        Pane pane = new Pane(sf, img/*, rect*/);
+        Pane pane = new Pane(img/*, rect*/);
 
         pane.setOnMouseClicked(e -> select(!selected));
         return pane;
@@ -68,7 +63,12 @@ public class Marble extends Sprite implements IChild, IColor {
 
     public void select(boolean show) {
         selected = show;
-        sf.setVisible(show);
+        if (show) {
+            frame.setMarble(this);
+            getChildren().add(frame.view());
+        } else {
+            getChildren().remove(frame.view());
+        }
     }
 
     private Image createMarbleImage(double radius, Paint fill) {
@@ -83,7 +83,6 @@ public class Marble extends Sprite implements IChild, IColor {
         circle.snapshot(parameters, wi);
 
         return wi;
-
     }
 
     /**
@@ -131,7 +130,7 @@ public class Marble extends Sprite implements IChild, IColor {
     }
 
     @Override
-    public Node view() {
+    public Marble view() {
         return this;
     }
 

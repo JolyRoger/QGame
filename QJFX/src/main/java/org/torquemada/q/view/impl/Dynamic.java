@@ -1,7 +1,11 @@
 package org.torquemada.q.view.impl;
 
 import javafx.scene.layout.Pane;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.view.contract.*;
+import org.torquemada.q.view.impl.squares.Marble;
+
+import javax.xml.ws.soap.Addressing;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +17,12 @@ public class Dynamic implements IParent {
 
     private Pane dynamicField;
 
-    private List<IChild> marbles;
+    private List<? extends IChild> marbles;
 
     public Dynamic() {
         super();
-        marbles = new ArrayList<>();
         dynamicField = new Pane();
+        marbles = new ArrayList<>();
     }
 
     @Override
@@ -39,10 +43,8 @@ public class Dynamic implements IParent {
     }
 
     @Override
-    public void add(IChild... child) {
-        for (IChild marble : child) {
-            marbles.add(marble);
-            dynamicField.getChildren().add(marble.view());
-        }
+    public void add(List<? extends IChild> children) {
+        marbles = children;
+        children.forEach(marble -> dynamicField.getChildren().add(marble.view()));
     }
 }

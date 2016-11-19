@@ -13,16 +13,19 @@ import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.IResizable;
 import org.torquemada.q.view.impl.squares.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class QLevel extends Pane implements ILevel, IResizable {
     int rowAmount, colAmount;
     private int[] levelData;
-    private Square[] squares;
+    @Autowired
+    private List<Square> squares;
     @Autowired
     private List<Marble> marbles;
-
+    @Autowired
+    private SelectingFrame frame;
     @Autowired @Qualifier("staticField")
     private IParent staticField;
 
@@ -55,13 +58,11 @@ public class QLevel extends Pane implements ILevel, IResizable {
         getChildren().add(staticField.getContainer());
         getChildren().add(dynamicField.getContainer());
 
-        squares = new Square[levelData.length];
+        for (int i = 0; i < levelData.length; i++) squares.add(create(i));
 
-        for (int i = 0; i < squares.length; i++) {
-            squares[i] = create(i);
-        }
         staticField.add(squares);
-        dynamicField.add(marbles.toArray(new IChild[marbles.size()]));
+        dynamicField.add(marbles);
+        frame.setMarble(marbles.get(0));
     }
 // TODO
     private Square create(int i) {
