@@ -4,14 +4,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.IParent;
-import org.torquemada.q.view.contract.Resizable;
 
 /**
  * Created by torquemada on 5/28/16.
  * This class represents a game cell.
  */
-public abstract class Square extends Pane implements Resizable {
+public abstract class Square extends Pane implements IChild {
 
     @Getter
     protected int row, col;
@@ -43,7 +43,8 @@ public abstract class Square extends Pane implements Resizable {
         image.setFitWidth(newValue.doubleValue());
     }
 
-    public void setToParent() {
-        staticField.add(this);
+    @Override
+    public Pane view() {
+        return this;
     }
 }

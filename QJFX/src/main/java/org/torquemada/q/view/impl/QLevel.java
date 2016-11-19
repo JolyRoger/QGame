@@ -7,16 +7,21 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.torquemada.q.model.contract.SquareType;
 import org.torquemada.q.model.contract.ValidColor;
+import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.ILevel;
 import org.torquemada.q.view.contract.IParent;
-import org.torquemada.q.view.contract.Resizable;
+import org.torquemada.q.view.contract.IResizable;
 import org.torquemada.q.view.impl.squares.*;
 
+import java.util.List;
+
 @Component
-public class QLevel extends Pane implements ILevel, Resizable {
-    int row, col;
+public class QLevel extends Pane implements ILevel, IResizable {
+    int rowAmount, colAmount;
     private int[] levelData;
     private Square[] squares;
+    @Autowired
+    private List<Marble> marbles;
 
     @Autowired @Qualifier("staticField")
     private IParent staticField;
@@ -26,8 +31,8 @@ public class QLevel extends Pane implements ILevel, Resizable {
 
     @Override
     public void setDimension(int row, int col) {
-        this.row = row;
-        this.col = col;
+        this.rowAmount = row;
+        this.colAmount = col;
     }
 
     @Override
@@ -37,8 +42,8 @@ public class QLevel extends Pane implements ILevel, Resizable {
 
     @Override
     public void select(int id, boolean select) {
-        Ball ball = ((Ball) squares[id]);
-        ball.select(select);
+//        Ball ball = ((Ball) squares[id]);
+//        ball.select(select);
 //        ball.repaint();
 
     }
@@ -54,26 +59,27 @@ public class QLevel extends Pane implements ILevel, Resizable {
 
         for (int i = 0; i < squares.length; i++) {
             squares[i] = create(i);
-            squares[i].setToParent();
         }
+        staticField.add(squares);
+        dynamicField.add(marbles.toArray(new IChild[marbles.size()]));
     }
 // TODO
     private Square create(int i) {
         int id = levelData[i];
-        int col = i % this.col;
-        int row = i / this.col;
+        int col = i % this.colAmount;
+        int row = i / this.colAmount;
 
         SquareType type = SquareType.getType(id);
         switch (type) {
             case empty : return empty().withAddress(col, row);
             case solid : return solid().withAddress(col, row);
 
-            case redball: return ball().withColor(ValidColor.RED).withAddress(col, row);
-            case whiteball: return ball().withColor(ValidColor.WHITE).withAddress(col, row);
-            case yellowball: return ball().withColor(ValidColor.YELLOW).withAddress(col, row);
-            case orangeball: return ball().withColor(ValidColor.ORANGE).withAddress(col, row);
-            case blueball : return ball().withColor(ValidColor.BLUE).withAddress(col, row);
-            case greenball: return  ball().withColor(ValidColor.GREEN).withAddress(col, row);
+            case redball: return createBallAndMarble(ValidColor.RED, col, row).withAddress(col, row);
+            case whiteball: return createBallAndMarble(ValidColor.WHITE, col, row).withAddress(col, row);
+            case yellowball: return createBallAndMarble(ValidColor.YELLOW, col, row).withAddress(col, row);
+            case orangeball: return createBallAndMarble(ValidColor.ORANGE, col, row).withAddress(col, row);
+            case blueball : return createBallAndMarble(ValidColor.BLUE, col, row).withAddress(col, row);
+            case greenball: return createBallAndMarble(ValidColor.GREEN, col, row).withAddress(col, row);
 
             case redloose : return loose().withColor(ValidColor.RED).withAddress(col, row);
             case whiteloose : return loose().withColor(ValidColor.WHITE).withAddress(col, row);
@@ -85,11 +91,16 @@ public class QLevel extends Pane implements ILevel, Resizable {
         return empty();
     }
 
-    @Lookup public Empty empty() { return null; }
-    @Lookup public Solid solid() { return null; }
-    @Lookup public Ball ball() { return null; }
-    @Lookup public Loose loose() { return null; }
+    private Square createBallAndMarble(ValidColor color, int col, int row) {
+        marbles.add(marble().withAddress(col,row).withColor(color));
+        return ball();
+    }
 
+    @Lookup("empty") public Square empty() { return null; }
+    @Lookup("ball") public Square ball() { return null; }
+    @Lookup public Solid solid() { return null; }
+    @Lookup public Loose loose() { return null; }
+    @Lookup public Marble marble() { return null; }
 
     @Override
     public void selectToMove(int selectedId) {

@@ -11,10 +11,10 @@ import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.ILevel;
-import org.torquemada.q.view.contract.Resizable;
+import org.torquemada.q.view.contract.IResizable;
 import java.util.concurrent.CountDownLatch;
 
-public class QBoard extends Application implements IBoard, Resizable {
+public class QBoard extends Application implements IBoard, IResizable {
 
     private static QBoard instance = null;
 
@@ -106,11 +106,11 @@ public class QBoard extends Application implements IBoard, Resizable {
 
     @Override
     public void recalculateWidth(Number newValue) {
-        ((Resizable) level).recalculateWidth(newValue);
+        level.recalculateWidth(newValue);
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
-        ((Resizable) level).recalculateHeight(newValue);
+        level.recalculateHeight(newValue);
     }
 }

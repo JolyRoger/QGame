@@ -4,7 +4,7 @@ package org.torquemada.q.view.contract;
  * Created by torquemada on 6/2/16.
  * Common level interface.
  */
-public interface ILevel {
+public interface ILevel extends IResizable {
     void setDimension(int row, int col);
     void setLevelData(int[] levelData);
     void select(int id, boolean select);

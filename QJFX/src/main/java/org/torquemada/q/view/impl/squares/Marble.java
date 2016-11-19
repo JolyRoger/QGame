@@ -11,22 +11,31 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.javafx.move.Sprite;
 import org.torquemada.javafx.move.Vector2D;
-import org.torquemada.q.view.contract.IBoard;
+import org.torquemada.q.controller.contract.IEngine;
+import org.torquemada.q.model.contract.ValidColor;
+import org.torquemada.q.view.contract.*;
 
 /**
  * Created by torquemada on 13.11.16.
  * The animated ball on the board. Can move.
  */
-public class Marble extends Sprite {
+public class Marble extends Sprite implements IChild, IColor {
 
     private Canvas sf;
     private boolean selected;
+    @Getter
+    private int col, row;
+    private Square square;
+    @Autowired
+    private IEngine engine;
 
-    public Marble(/*IParent layer, */Color color) {
-        super(/*layer.getContainer(), */new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0),
-                IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE, color);
+    public Marble() {
+        super(new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0),
+                (double)IBoard.SQUARE_SIZE, (double)IBoard.SQUARE_SIZE/*, color*/);
     }
 
     @Override
@@ -90,5 +99,46 @@ public class Marble extends Sprite {
         steer.limit(maxForce);
 
         applyForce(steer);
+    }
+
+    @Override
+    public Marble withAddress(int col, int row) {
+        this.col = col;
+        this.row = row;
+        return this;
+    }
+
+    @Override
+    public void recalculateWidth(Number newValue) {
+        int colAmount = engine.getColAmount();
+        double newDoubleValue = newValue.doubleValue();
+        double squareWidth = newDoubleValue / colAmount;
+        double x = squareWidth * col + squareWidth / 2;
+        setLocation(x, getLocation().y);
+        setScaleX(newDoubleValue / (colAmount * IBoard.SQUARE_SIZE));
+        display();
+    }
+
+    @Override
+    public void recalculateHeight(Number newValue) {
+        int rowAmount = engine.getRowAmount();
+        double newDoubleValue = newValue.doubleValue();
+        double squareHeight = newDoubleValue / rowAmount;
+        double y = squareHeight * row + squareHeight / 2;
+        setLocation(getLocation().x, y);
+        setScaleY(newDoubleValue / (rowAmount * IBoard.SQUARE_SIZE));
+        display();
+    }
+
+    @Override
+    public Node view() {
+        return this;
+    }
+
+    @Override
+    public Marble withColor(ValidColor color) {
+        Node view = createView(color.getPlatformColor());
+        getChildren().add(view);
+        return this;
     }
 }

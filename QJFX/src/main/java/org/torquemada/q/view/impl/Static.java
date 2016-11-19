@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
+import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.impl.squares.Square;
 
@@ -28,8 +29,10 @@ public class Static implements IParent {
     }
 
     @Override
-    public void add(Square square) {
-        staticField.add(square, square.getCol(), square.getRow());
+    public void add(IChild... sq) {
+        for (IChild square : sq) {
+            staticField.add(square.view(), square.getCol(), square.getRow());
+        }
     }
 
     @Override

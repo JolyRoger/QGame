@@ -37,5 +37,4 @@ public class Loose extends ColorfulSquare {
         g.fillRect(0,0, canvas.getWidth(), newValue.doubleValue());
         super.recalculateHeight(newValue);
     }
-
 }

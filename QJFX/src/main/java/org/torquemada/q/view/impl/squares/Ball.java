@@ -35,13 +35,6 @@ public class Ball extends ColorfulSquare {
     @Override
     public ColorfulSquare withColor(ValidColor color) {
         super.withColor(color);
-        marble = new Marble(color.getPlatformColor());
         return this;
-    }
-
-    @Override
-    public void setToParent() {
-        super.setToParent();
-        dynamicField.add(this);
     }
 }
