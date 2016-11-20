@@ -27,7 +27,9 @@ public class SettingsPanel extends AnchorPane implements ISettings {
     void init() {
         Button reloadBtn = new Button("Перезагрузи уровень");
         reloadBtn.setId(SET_LEVEL_ID);
+        reloadBtn.setFocusTraversable(false);
         ComboBox<Integer> cbox = new ComboBox<>();
+        cbox.setFocusTraversable(false);
         AnchorPane.setLeftAnchor(reloadBtn, 0d);
         AnchorPane.setRightAnchor(cbox, 0d);
         AnchorPane.setRightAnchor(reloadBtn, 50d);

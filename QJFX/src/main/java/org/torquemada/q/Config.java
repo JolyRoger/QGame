@@ -1,5 +1,7 @@
 package org.torquemada.q;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,11 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.controller.impl.QEngine;
+import org.torquemada.q.controller.impl.QEventHandler;
+import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.IParent;
-import org.torquemada.q.view.impl.Dynamic;
-import org.torquemada.q.view.impl.QLevel;
-import org.torquemada.q.view.impl.SettingsPanel;
-import org.torquemada.q.view.impl.Static;
+import org.torquemada.q.view.impl.*;
 import org.torquemada.q.view.impl.squares.*;
 
 /**
@@ -23,6 +24,8 @@ import org.torquemada.q.view.impl.squares.*;
 public class Config {
 
     @Bean public IEngine engine() { return new QEngine(); }
+
+    @Bean public IBoard board() { return new QBoard(); }
 
     @Bean public IParent dynamicField() { return new Dynamic(); }
 
@@ -47,4 +50,7 @@ public class Config {
 
     @Bean
     public SelectingFrame frame() { return new SelectingFrame(); }
+
+    @Bean
+    public EventHandler<KeyEvent> eventHandler() { return new QEventHandler(); }
 }

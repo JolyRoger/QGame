@@ -2,12 +2,9 @@ package org.torquemada.q.view.impl.squares;
 
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -25,7 +22,6 @@ import org.torquemada.q.view.contract.*;
  */
 public class Marble extends Sprite implements IChild, IColor {
 
-    private boolean selected;
     @Getter
     private int col, row;
     @Autowired
@@ -54,18 +50,13 @@ public class Marble extends Sprite implements IChild, IColor {
         rect.setArcHeight(5);
         rect.setStroke(Color.GREEN);
 */
-
-        Pane pane = new Pane(img/*, rect*/);
-
-        pane.setOnMouseClicked(e -> select(!selected));
-        return pane;
+        return img;
     }
 
     public void select(boolean show) {
-        selected = show;
         if (show) {
-            frame.setMarble(this);
             getChildren().add(frame.view());
+            frame.view().toBack();
         } else {
             getChildren().remove(frame.view());
         }

@@ -4,10 +4,7 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin:'application'
 
-//mainClassName = "org.torquemada.javafx.sample.HelloWorld"
-//mainClassName = "org.torquemada.javafx.sample.LayerTest"
-mainClassName = "org.torquemada.q.controller.impl.QEngine"
-
+mainClassName = "org.torquemada.q.Starter"
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 

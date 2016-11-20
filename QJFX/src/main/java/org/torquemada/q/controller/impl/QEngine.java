@@ -2,6 +2,8 @@ package org.torquemada.q.controller.impl;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -203,6 +205,7 @@ public class QEngine implements IEngine {
         board.setLevel(context.getBean(ILevel.class));
         board.setSettingsPanel(context.getBean(SettingsPanel.class));
         board.setEngine(context.getBean(IEngine.class));
+//        board.setEventHandler((QEventHandler) context.getBean("eventHandler"));
 
         context.getBeanFactory().registerSingleton("qboard", board);
         Platform.runLater(context.getBean(IEngine.class)::run);

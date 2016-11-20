@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.torquemada.q.model.contract.SquareType;
 import org.torquemada.q.model.contract.ValidColor;
-import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.ILevel;
 import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.IResizable;
 import org.torquemada.q.view.impl.squares.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -57,6 +54,9 @@ public class QLevel extends Pane implements ILevel, IResizable {
 
         getChildren().add(staticField.getContainer());
         getChildren().add(dynamicField.getContainer());
+
+        squares.clear();
+        marbles.clear();
 
         for (int i = 0; i < levelData.length; i++) squares.add(create(i));
 
@@ -105,7 +105,7 @@ public class QLevel extends Pane implements ILevel, IResizable {
 
     @Override
     public void selectToMove(int selectedId) {
-
+        frame.select(!frame.isSelect());
     }
 
     @Override

@@ -2,12 +2,20 @@ package org.torquemada.q.view.impl;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Scene;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.torquemada.q.Starter;
 import org.torquemada.q.controller.contract.IEngine;
+import org.torquemada.q.controller.impl.QEventHandler;
 import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.ILevel;
@@ -19,7 +27,8 @@ public class QBoard extends Application implements IBoard, IResizable {
     private static QBoard instance = null;
 
     private Stage stage;
-
+    @Autowired
+    private EventHandler<KeyEvent> keyEventHandler;
     @Setter
     @Autowired
     private ILevel level;
@@ -37,6 +46,7 @@ public class QBoard extends Application implements IBoard, IResizable {
     @Override
     public void initialize() {
         settingsPanel.init();
+        stage = Starter.getStage();
         Resources.LevelData data = Resources.getLevelData(settingsPanel.getLevelNumber());
         BorderPane root = new BorderPane();
 
@@ -47,7 +57,17 @@ public class QBoard extends Application implements IBoard, IResizable {
         Scene scene = new Scene(root, data.col * SQUARE_SIZE, data.row * SQUARE_SIZE + 29);
         scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue));
         scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()));
-
+//        case KeyEvent.VK_DOWN : engine.notifyDown(); break;
+//        case KeyEvent.VK_RIGHT : engine.notifyRight(); break;
+//        case KeyEvent.VK_UP : engine.notifyUp(); break;
+//        case KeyEvent.VK_LEFT : engine.notifyLeft(); break;
+//        case KeyEvent.VK_SPACE : engine.notifySpace(); break;
+//        case KeyEvent.VK_B : engine.loadLevel(settingsPanel.getLevelNumber()); break;
+//        case KeyEvent.VK_PAGE_UP : settingsPanel.setNextLevelNumber(); break;
+//        case KeyEvent.VK_PAGE_DOWN : settingsPanel.setPrevLevelNumber(); break;
+//        case KeyEvent.VK_ESCAPE : engine.exit(); break;
+//        keyEventHandler = new QEventHandler();
+        scene.setOnKeyPressed(keyEventHandler);     // FIXME
         stage.setScene(scene);
         stage.show();
     }
@@ -112,5 +132,9 @@ public class QBoard extends Application implements IBoard, IResizable {
     @Override
     public void recalculateHeight(Number newValue) {
         level.recalculateHeight(newValue);
+    }
+
+    public void setEventHandler(EventHandler<KeyEvent> eventHandler) {
+        stage.getScene().setOnKeyPressed(eventHandler);
     }
 }
