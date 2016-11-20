@@ -28,12 +28,12 @@ public class SettingsPanel extends AnchorPane implements ISettings {
         Button reloadBtn = new Button("Перезагрузи уровень");
         reloadBtn.setId(SET_LEVEL_ID);
         reloadBtn.setFocusTraversable(false);
-        ComboBox<Integer> cbox = new ComboBox<>();
-        cbox.setFocusTraversable(false);
+        ComboBox<Integer> levelSelector = new ComboBox<>();
+        levelSelector.setFocusTraversable(false);
         AnchorPane.setLeftAnchor(reloadBtn, 0d);
-        AnchorPane.setRightAnchor(cbox, 0d);
+        AnchorPane.setRightAnchor(levelSelector, 0d);
         AnchorPane.setRightAnchor(reloadBtn, 50d);
-        getChildren().addAll(reloadBtn, cbox);
+        getChildren().addAll(reloadBtn, levelSelector);
     }
 
     @Override

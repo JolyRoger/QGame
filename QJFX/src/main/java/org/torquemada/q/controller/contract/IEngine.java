@@ -13,6 +13,8 @@ public interface IEngine {
     void notifyDown();
     void notifySpace();
 
+    void ballInLoose(int from, int to);
+
     int getRowAmount();
     int getColAmount();
     int getCurrentLevel();

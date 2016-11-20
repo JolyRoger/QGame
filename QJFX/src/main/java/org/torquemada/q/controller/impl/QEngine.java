@@ -2,8 +2,6 @@ package org.torquemada.q.controller.impl;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -104,7 +102,8 @@ public class QEngine implements IEngine {
             if (levelData[i] == 0) { to = i; continue; }
             if (levelData[i] == levelData[selectedId] * 11) {
                 to = i;
-                ballInLoose(from, to);
+//                ballInLoose(from, to);
+                board.moveBall(from, to, true);
                 return;
             }
             break;
@@ -116,13 +115,13 @@ public class QEngine implements IEngine {
         selectedId = to;
         balls.remove((Integer) from);
         balls.add(to);
-        board.moveBall(from, to);
+        board.moveBall(from, to, false);
     }
 
-    private void ballInLoose(int from, int to) {
+    @Override
+    public void ballInLoose(int from, int to) {
         levelData[from] = 0;
         balls.remove((Integer) from);
-        board.moveBall(from, -1);
         if (balls.size() > 0) {
             selectedToMove = false;
             notifySelect(balls.get(0));
@@ -187,27 +186,5 @@ public class QEngine implements IEngine {
         } else {
             notifySelect(QUtils.calculatePreferredToSelect(balls, selectedId, colAmount, Direction.Down));
         }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-
-        new Thread("Run QGame") {
-            @Override
-            public void run() {
-                Application.launch(QBoard.class);
-            }
-        }.start();
-
-        QBoard board = QBoard.waitAndGetInstance();
-        Resources.loadResources();
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-
-        board.setLevel(context.getBean(ILevel.class));
-        board.setSettingsPanel(context.getBean(SettingsPanel.class));
-        board.setEngine(context.getBean(IEngine.class));
-//        board.setEventHandler((QEventHandler) context.getBean("eventHandler"));
-
-        context.getBeanFactory().registerSingleton("qboard", board);
-        Platform.runLater(context.getBean(IEngine.class)::run);
     }
 }

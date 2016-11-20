@@ -15,6 +15,7 @@ import org.torquemada.q.view.contract.IChild;
  */
 public class SelectingFrame implements IChild {
 
+    @Getter
     private Marble marble;
     private Canvas sf;
     @Getter
@@ -67,5 +68,9 @@ public class SelectingFrame implements IChild {
     @Override
     public void recalculateHeight(Number newValue) {
 
+    }
+
+    public void show(boolean visible) {
+        sf.setVisible(visible);
     }
 }

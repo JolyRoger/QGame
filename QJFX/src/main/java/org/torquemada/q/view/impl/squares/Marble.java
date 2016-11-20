@@ -1,5 +1,6 @@
 package org.torquemada.q.view.impl.squares;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
@@ -10,8 +11,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.torquemada.javafx.move.Sprite;
-import org.torquemada.javafx.move.Vector2D;
+import org.torquemada.q.controller.animation.Sprite;
+import org.torquemada.q.controller.animation.Vector2D;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.contract.ValidColor;
 import org.torquemada.q.view.contract.*;
@@ -130,5 +131,51 @@ public class Marble extends Sprite implements IChild, IColor {
         Node view = createView(color.getPlatformColor());
         getChildren().add(view);
         return this;
+    }
+
+    public void go(int col, int row, boolean toLoose) {
+        int divisor = 10;
+        final double[] x = {getLocation().x};
+        final double[] y = {getLocation().y};
+        double targetX = col * getWidth() + getWidth()  / 2;
+        double targetY = row * getHeight() + getHeight()  / 2;
+        double remainedDistanceX = targetX - x[0];
+        double remainedDistanceY = targetY - y[0];
+        double incrementX = remainedDistanceX / divisor;
+        double incrementY = remainedDistanceY / divisor;
+        final boolean[] proceedX = {true};
+        final boolean[] proceedY = {true};
+        int from = this.row * engine.getColAmount() + this.col;
+        int to = row * engine.getColAmount() + col;
+        this.col = col;
+        this.row = row;
+
+        AnimationTimer gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (proceedX[0]) {
+                    x[0] += incrementX;
+                    proceedX[0] = Math.abs(x[0] - targetX) > Math.abs(incrementX);
+                }
+                if (proceedY[0]) {
+                    y[0] += incrementY;
+                    proceedY[0] = Math.abs(y[0] - targetY) > Math.abs(incrementY);
+                }
+                setLocation(x[0], y[0]);
+                if (!proceedX[0] && !proceedY[0]) {
+                    setLocation(targetX, targetY);
+                    stop();
+                    if (toLoose) {
+                        engine.ballInLoose(from, to);
+                        frame.select(false);
+                        setVisible(false);
+                    }
+                    frame.show(true);
+                }
+                display();
+            }
+        };
+
+        gameLoop.start();
     }
 }

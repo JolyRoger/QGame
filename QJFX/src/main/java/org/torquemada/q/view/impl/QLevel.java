@@ -42,10 +42,11 @@ public class QLevel extends Pane implements ILevel, IResizable {
 
     @Override
     public void select(int id, boolean select) {
-//        Ball ball = ((Ball) squares[id]);
-//        ball.select(select);
-//        ball.repaint();
-
+        marbles.forEach(marble -> {
+            if (marble.getCol() == id%colAmount && marble.getRow() == id/colAmount) {
+                frame.setMarble(marble);
+            }
+        });
     }
 
     @Override
@@ -109,18 +110,16 @@ public class QLevel extends Pane implements ILevel, IResizable {
     }
 
     @Override
-    public void moveBall(int from, int to) {
-
-    }
-
-    @Override
-    public void removeBall(int from) {
-
+    public void moveBall(int from, int to, boolean toLoose) {
+        frame.show(false);
+        frame.getMarble().go(to%colAmount, to/colAmount, toLoose);
     }
 
     @Override
     public boolean isReadyToMove(int selectedId) {
-        return false;
+        return  frame.getCol() == selectedId%colAmount &&
+                frame.getRow() == selectedId/colAmount &&
+                frame.isSelect();
     }
 
     @Override

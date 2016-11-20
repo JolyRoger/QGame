@@ -10,8 +10,7 @@ public interface ILevel extends IResizable {
     void select(int id, boolean select);
     void init();
     void selectToMove(int selectedId);
-    void moveBall(int from, int to);
-    void removeBall(int from);
+    void moveBall(int from, int to, boolean toLoose);
     boolean isReadyToMove(int selectedId);
     void clear();
 }

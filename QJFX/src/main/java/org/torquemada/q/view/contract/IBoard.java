@@ -14,6 +14,6 @@ public interface IBoard {
     void select(int id, boolean select);
     void selectToMove(int selectedId);
     boolean isReadyToMove(int selectedId);
-    void moveBall(int from, int to);
+    void moveBall(int from, int to, boolean toLoose);
     void clearLevel();
 }
