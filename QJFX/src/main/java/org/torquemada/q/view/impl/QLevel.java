@@ -124,7 +124,9 @@ public class QLevel extends Pane implements ILevel, IResizable {
 
     @Override
     public void clear() {
-
+        staticField.getContainer().getChildren().clear();
+        dynamicField.getContainer().getChildren().clear();
+        getChildren().clear();
     }
 
     @Override

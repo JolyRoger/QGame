@@ -83,8 +83,8 @@ public class Resources {
         }
     }
 
-    public static String[] getAvailableLevelNumbersAsStringArray() {
-        return levelMap.keySet().stream().map(String::valueOf).toArray(String[]::new);
+    public static Integer[] getAvailableLevelNumbersAsIntegerArray() {
+        return levelMap.keySet().stream().toArray(Integer[]::new);
     }
 
     public static LevelData getLevelData(int number) {

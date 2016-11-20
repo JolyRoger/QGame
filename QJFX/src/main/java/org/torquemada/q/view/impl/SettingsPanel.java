@@ -1,10 +1,17 @@
 package org.torquemada.q.view.impl;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
+import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.ISettings;
 
 /**
@@ -14,7 +21,8 @@ import org.torquemada.q.view.contract.ISettings;
 public class SettingsPanel extends AnchorPane implements ISettings {
 
     private int levelNumber;
-    private String[] levelModel;
+    private Integer[] levelModel;
+    private ComboBox<Integer> levelSelector;
 
     @Autowired
     private IEngine engine;
@@ -22,14 +30,26 @@ public class SettingsPanel extends AnchorPane implements ISettings {
     public static final String SET_LEVEL_ID = "set.level.button";
 
     public SettingsPanel() {
+        levelNumber = 1;
     }
 
     void init() {
         Button reloadBtn = new Button("Перезагрузи уровень");
         reloadBtn.setId(SET_LEVEL_ID);
         reloadBtn.setFocusTraversable(false);
-        ComboBox<Integer> levelSelector = new ComboBox<>();
+        reloadBtn.setOnAction(event -> {
+            engine.loadLevel(levelNumber);
+        });
+
+        levelModel = Resources.getAvailableLevelNumbersAsIntegerArray();
+        ObservableList<Integer> options = FXCollections.observableArrayList(levelModel);
+        levelSelector = new ComboBox<>(options);
         levelSelector.setFocusTraversable(false);
+        levelSelector.setValue(levelNumber);
+        levelSelector.setOnAction(event -> {
+            levelNumber = (Integer) ((ComboBox) event.getSource()).getSelectionModel().getSelectedItem();
+        });
+
         AnchorPane.setLeftAnchor(reloadBtn, 0d);
         AnchorPane.setRightAnchor(levelSelector, 0d);
         AnchorPane.setRightAnchor(reloadBtn, 50d);
@@ -39,8 +59,9 @@ public class SettingsPanel extends AnchorPane implements ISettings {
     @Override
     public void setLevelNumber(int levelNumber) {
         this.levelNumber = levelNumber;
-        for (String ln : levelModel) {
-            if (Integer.parseInt(ln) == levelNumber) {
+        for (Integer ln : levelModel) {
+            if (ln == levelNumber) {
+                levelSelector.setValue(levelNumber);
 //                SwingUtilities.invokeLater(() -> spinner.setValue(ln));
                 break;
             }
@@ -54,8 +75,7 @@ public class SettingsPanel extends AnchorPane implements ISettings {
 
     @Override
     public int getLevelNumber() {
-        return 1;
-//        return levelNumber;
+        return levelNumber;
     }
 
     @Override
