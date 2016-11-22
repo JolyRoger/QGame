@@ -3,20 +3,17 @@ package org.torquemada.q.view.impl;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.Starter;
-import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.ILevel;
 import org.torquemada.q.view.contract.IResizable;
 
 public class QBoard implements IBoard, IResizable {
-
-    private static QBoard instance = null;
 
     private Stage stage;
 
@@ -28,12 +25,7 @@ public class QBoard implements IBoard, IResizable {
 
     @Setter
     @Autowired
-    private IEngine engine;
-
-    @Setter
-    @Autowired
     private SettingsPanel settingsPanel;
-    private final static int MAGIC_SETTING_PANEL_HEIGHT = 29;
 
     @Override
     public void initialize() {
@@ -45,7 +37,6 @@ public class QBoard implements IBoard, IResizable {
         root.setTop(settingsPanel);
         root.setCenter((QLevel) level);
 
-// Magic number 29 means height of settingsPanel. It's 0 here in this method. Currently, I don't know how to calculate it.
         Scene scene = new Scene(root);
         scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue));
         scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()));
@@ -54,8 +45,6 @@ public class QBoard implements IBoard, IResizable {
         stage.show();
     }
 
-    private void show() {}
-
     @Override
     public void assignLevel(int number, int row, int col, int[] levelData) {
         level.setDimension(row, col);
@@ -63,11 +52,11 @@ public class QBoard implements IBoard, IResizable {
         level.init();
 
         stage.setWidth(SQUARE_SIZE * col);
-        stage.setHeight(SQUARE_SIZE * row + MAGIC_SETTING_PANEL_HEIGHT);
+        stage.setHeight(SQUARE_SIZE * row + settingsPanel.getHeight());
         recalculateWidth(SQUARE_SIZE * col);
         recalculateHeight(SQUARE_SIZE * row);
 
-//        setTitle("Q-Game. Level " + number);
+        stage.setTitle("Q-Game. Level " + number);
     }
 
     @Override
