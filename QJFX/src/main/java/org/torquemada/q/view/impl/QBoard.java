@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.Starter;
-import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.ILevel;
 import org.torquemada.q.view.contract.IResizable;
+import org.torquemada.q.view.contract.ISettings;
 
 public class QBoard implements IBoard, IResizable {
 
@@ -25,21 +25,22 @@ public class QBoard implements IBoard, IResizable {
 
     @Setter
     @Autowired
-    private SettingsPanel settingsPanel;
+    private ISettings settingsPanel;
 
     @Override
     public void initialize() {
         settingsPanel.init();
         stage = Starter.getStage();
-        Resources.LevelData data = Resources.getLevelData(settingsPanel.getLevelNumber());
+//        Resources.LevelData data = Resources.getLevelData(settingsPanel.getLevelNumber());
         BorderPane root = new BorderPane();
 
-        root.setTop(settingsPanel);
+        root.setTop(settingsPanel.region());
         root.setCenter((QLevel) level);
 
         Scene scene = new Scene(root);
         scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue));
-        scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()));
+        scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() -
+                settingsPanel.region().getHeight()));
         scene.setOnKeyPressed(keyEventHandler);
         stage.setScene(scene);
         stage.show();
@@ -52,7 +53,7 @@ public class QBoard implements IBoard, IResizable {
         level.init();
 
         stage.setWidth(SQUARE_SIZE * col);
-        stage.setHeight(SQUARE_SIZE * row + settingsPanel.getHeight());
+        stage.setHeight(SQUARE_SIZE * row + settingsPanel.region().getHeight());
         recalculateWidth(SQUARE_SIZE * col);
         recalculateHeight(SQUARE_SIZE * row);
 
@@ -82,7 +83,6 @@ public class QBoard implements IBoard, IResizable {
     @Override
     public void clearLevel() {
         level.clear();
-//        revalidate();
     }
 
     @Override

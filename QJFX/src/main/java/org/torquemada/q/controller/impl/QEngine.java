@@ -8,7 +8,6 @@ import org.torquemada.q.model.contract.Direction;
 import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.ISettings;
-
 import java.util.ArrayList;
 import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
@@ -39,7 +38,7 @@ public class QEngine implements IEngine {
 
     @Override
     public void run() {
-        currentLevel = 1;
+        currentLevel = 62;
         board.initialize();
         reloadLevel();
     }
@@ -95,7 +94,6 @@ public class QEngine implements IEngine {
             if (levelData[i] == 0) { to = i; continue; }
             if (levelData[i] == levelData[selectedId] * 11) {
                 to = i;
-//                ballInLoose(from, to);
                 board.moveBall(from, to, true);
                 return;
             }

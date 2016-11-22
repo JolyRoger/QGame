@@ -12,6 +12,7 @@ import org.torquemada.q.controller.impl.QEngine;
 import org.torquemada.q.controller.impl.QEventHandler;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.IParent;
+import org.torquemada.q.view.contract.ISettings;
 import org.torquemada.q.view.impl.*;
 import org.torquemada.q.view.impl.squares.*;
 
@@ -31,7 +32,7 @@ public class Config {
 
     @Bean public IParent staticField() { return new Static(); }
 
-    @Bean public SettingsPanel settingsPanel() { return new SettingsPanel(); }
+    @Bean public ISettings settingsPanel() { return new SettingsPanel(); }
 
     @Bean @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Empty empty() { return new Empty(staticField()); }

@@ -2,23 +2,20 @@ package org.torquemada.q.view.impl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.impl.Resources;
+import org.torquemada.q.view.contract.IRegion;
 import org.torquemada.q.view.contract.ISettings;
 
 /**
  * Created by torquemada on 31.10.16.
  * Panel of controls to switch or reload level.
  */
-public class SettingsPanel extends AnchorPane implements ISettings {
+public class SettingsPanel extends AnchorPane implements ISettings, IRegion {
 
     private int levelNumber;
     private Integer[] levelModel;
@@ -33,7 +30,8 @@ public class SettingsPanel extends AnchorPane implements ISettings {
         levelNumber = 1;
     }
 
-    void init() {
+    @Override
+    public void init() {
         Button reloadBtn = new Button("Перезагрузи уровень");
         reloadBtn.setId(SET_LEVEL_ID);
         reloadBtn.setFocusTraversable(false);
@@ -62,7 +60,6 @@ public class SettingsPanel extends AnchorPane implements ISettings {
         for (Integer ln : levelModel) {
             if (ln == levelNumber) {
                 levelSelector.setValue(levelNumber);
-//                SwingUtilities.invokeLater(() -> spinner.setValue(ln));
                 break;
             }
         }
@@ -81,5 +78,10 @@ public class SettingsPanel extends AnchorPane implements ISettings {
     @Override
     public void setPrevLevelNumber() {
         setLevelNumber(levelNumber-1);
+    }
+
+    @Override
+    public SettingsPanel region() {
+        return this;
     }
 }

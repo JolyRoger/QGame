@@ -44,7 +44,7 @@ public abstract class Square extends Pane implements IChild {
     }
 
     @Override
-    public Pane view() {
+    public Square view() {
         return this;
     }
 }

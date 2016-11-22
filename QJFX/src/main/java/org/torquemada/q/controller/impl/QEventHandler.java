@@ -5,7 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
-import org.torquemada.q.view.impl.SettingsPanel;
+import org.torquemada.q.view.contract.ISettings;
 
 /**
  * Created by torquemada on 19.11.16.
@@ -16,7 +16,7 @@ public class QEventHandler implements EventHandler<KeyEvent> {
     @Autowired
     private IEngine engine;
     @Autowired
-    private SettingsPanel settingsPanel;
+    private ISettings settingsPanel;
 
     @Override
     public void handle(KeyEvent keyEvent) {
