@@ -1,20 +1,13 @@
 package org.torquemada.q.controller.impl;
 
-import javafx.application.Application;
-import javafx.application.Platform;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Lazy;
-import org.torquemada.q.Config;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.contract.Direction;
 import org.torquemada.q.model.impl.Resources;
 import org.torquemada.q.view.contract.IBoard;
-import org.torquemada.q.view.contract.ILevel;
 import org.torquemada.q.view.contract.ISettings;
-import org.torquemada.q.view.impl.QBoard;
-import org.torquemada.q.view.impl.SettingsPanel;
 
 import java.util.ArrayList;
 import java.util.function.IntPredicate;
@@ -47,8 +40,8 @@ public class QEngine implements IEngine {
     @Override
     public void run() {
         currentLevel = 1;
-        reloadLevel();
         board.initialize();
+        reloadLevel();
     }
 
     @Override

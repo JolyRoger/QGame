@@ -39,7 +39,6 @@ public class Marble extends Sprite implements IChild, IColor {
     public Node createView(Paint color) {
         double location = (IBoard.SQUARE_SIZE - IBoard.MARBLE_SIZE) / 2;
 
-
         ImageView img = new ImageView(createMarbleImage(IBoard.MARBLE_SIZE, color));
         img.setX(location);
         img.setY(location);
@@ -137,8 +136,8 @@ public class Marble extends Sprite implements IChild, IColor {
         int divisor = 10;
         final double[] x = {getLocation().x};
         final double[] y = {getLocation().y};
-        double targetX = col * getWidth() + getWidth()  / 2;
-        double targetY = row * getHeight() + getHeight()  / 2;
+        double targetX = col * getWidth() * getScaleX() + getWidth() * getScaleX() / 2;
+        double targetY = row * getHeight() * getScaleY() + getHeight() * getScaleY() / 2;
         double remainedDistanceX = targetX - x[0];
         double remainedDistanceY = targetY - y[0];
         double incrementX = remainedDistanceX / divisor;
