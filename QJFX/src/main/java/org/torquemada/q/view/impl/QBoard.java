@@ -19,7 +19,7 @@ public class QBoard implements IBoard, IResizable {
     private static QBoard instance = null;
 
     private Stage stage;
-    private Scene scene;
+
     @Autowired
     private EventHandler<KeyEvent> keyEventHandler;
     @Setter
@@ -33,6 +33,7 @@ public class QBoard implements IBoard, IResizable {
     @Setter
     @Autowired
     private SettingsPanel settingsPanel;
+    private final static int MAGIC_SETTING_PANEL_HEIGHT = 29;
 
     @Override
     public void initialize() {
@@ -45,7 +46,7 @@ public class QBoard implements IBoard, IResizable {
         root.setCenter((QLevel) level);
 
 // Magic number 29 means height of settingsPanel. It's 0 here in this method. Currently, I don't know how to calculate it.
-        scene = new Scene(root, data.col * SQUARE_SIZE, data.row * SQUARE_SIZE + 29);
+        Scene scene = new Scene(root);
         scene.widthProperty().addListener((observable, oldValue, newValue) -> recalculateWidth(newValue));
         scene.heightProperty().addListener((observable, oldValue, newValue) -> recalculateHeight(newValue.doubleValue() - settingsPanel.getHeight()));
         scene.setOnKeyPressed(keyEventHandler);
@@ -61,6 +62,8 @@ public class QBoard implements IBoard, IResizable {
         level.setLevelData(levelData);
         level.init();
 
+        stage.setWidth(SQUARE_SIZE * col);
+        stage.setHeight(SQUARE_SIZE * row + MAGIC_SETTING_PANEL_HEIGHT);
         recalculateWidth(SQUARE_SIZE * col);
         recalculateHeight(SQUARE_SIZE * row);
 
