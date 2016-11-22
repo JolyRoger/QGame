@@ -1,7 +1,7 @@
 package org.torquemada.q.model.impl;
 
+import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by torquemada on 6/5/16.
+ * Load and get level map.
  */
 public class Resources {
 
@@ -16,7 +17,6 @@ public class Resources {
 
     public static class LevelData {
         public int[] levelData;
-//        public int[] dimension;
         public int number;
         public int row;
         public int col;
@@ -25,20 +25,17 @@ public class Resources {
             this.levelData = levelData;
             this.row = row;
             this.col = col;
-//            this.dimension = dimension;
             this.number = number;
         }
     }
 
-    public static void loadResources() {
-        List<String> stringLevels = null;
+    @SneakyThrows(IOException.class)
+    private static List<String> readStringLevels() {
+        return FileUtils.readLines(new File("src/main/resources/standard.lev"), "UTF-8");
+    }
 
-        try {
-            stringLevels = FileUtils.readLines(new File("src/main/resources/standard.lev"), "UTF-8");
-        } catch (IOException e) {
-            System.err.println("Can't load levels from standard.lev");
-            System.exit(1);
-        }
+    public static void loadResources() {
+        List<String> stringLevels = readStringLevels();
 
         boolean readLevelNumber;
         boolean readDimension = false;
@@ -50,7 +47,6 @@ public class Resources {
         int[] currentLevelData = null;
         String[] currentSplitData;
 
-        int j = 0;
         for (String stringLevel : stringLevels) {
             readLevelNumber = stringLevel.startsWith("%");
 
@@ -90,6 +86,6 @@ public class Resources {
     public static LevelData getLevelData(int number) {
         LevelData levelData = levelMap.get(number);
         if (levelData == null) return null;
-        return new LevelData(levelData.number, levelData.levelData.clone(), /*levelData.dimension.clone()*/ levelData.row, levelData.col);
+        return new LevelData(levelData.number, levelData.levelData.clone(), levelData.row, levelData.col);
     }
 }
