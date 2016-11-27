@@ -28,13 +28,13 @@ public class Dynamic implements IParent {
     @Override
     public void recalculateWidth(Number newValue) {
         dynamicField.setPrefWidth(newValue.doubleValue());
-        marbles.forEach(marble -> marble.recalculateWidth(newValue));
+//        marbles.forEach(marble -> marble.recalculateWidth(newValue));
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
         dynamicField.setPrefHeight(newValue.doubleValue());
-        marbles.forEach(marble -> marble.recalculateHeight(newValue));
+//        marbles.forEach(marble -> marble.recalculateHeight(newValue));
     }
 
     @Override
@@ -45,6 +45,6 @@ public class Dynamic implements IParent {
     @Override
     public void add(List<? extends IChild> children) {
         marbles = children;
-        children.forEach(marble -> dynamicField.getChildren().add(marble.view()));
+//        children.forEach(marble -> dynamicField.getChildren().add(marble.view()));
     }
 }

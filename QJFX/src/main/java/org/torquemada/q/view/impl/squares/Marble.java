@@ -15,6 +15,7 @@ import org.torquemada.q.controller.animation.Sprite;
 import org.torquemada.q.controller.animation.Vector2D;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.contract.ValidColor;
+import org.torquemada.q.view.contract.IAddress;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.IColor;
@@ -51,12 +52,12 @@ public class Marble extends Sprite implements IChild, IColor {
     }
 
     public void select(boolean show) {
-        if (show) {
-            getChildren().add(frame.view());
-            frame.view().toBack();
-        } else {
-            getChildren().remove(frame.view());
-        }
+//        if (show) {
+//            getChildren().add(frame.view());
+//            frame.view().toBack();
+//        } else {
+//            getChildren().remove(frame.view());
+//        }
     }
 
     private Image createMarbleImage(double radius, Paint fill) {
@@ -82,30 +83,35 @@ public class Marble extends Sprite implements IChild, IColor {
 
     @Override
     public void recalculateWidth(Number newValue) {
-        int colAmount = engine.getColAmount();
+        System.out.println("w=" + newValue);
+        double newDoubleValue = newValue.doubleValue();
+        setScaleX(newDoubleValue / IBoard.SQUARE_SIZE);
+/*
         double newDoubleValue = newValue.doubleValue();
         double squareWidth = newDoubleValue / colAmount;
         double x = squareWidth * col + squareWidth / 2;
         setLocation(x, getLocation().y);
-        setScaleX(newDoubleValue / (colAmount * IBoard.SQUARE_SIZE));
         display();
+*/
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
-        int rowAmount = engine.getRowAmount();
+        System.out.println("h=" + newValue);
         double newDoubleValue = newValue.doubleValue();
+        setScaleY(newDoubleValue / IBoard.SQUARE_SIZE);
+        /*
         double squareHeight = newDoubleValue / rowAmount;
         double y = squareHeight * row + squareHeight / 2;
         setLocation(getLocation().x, y);
-        setScaleY(newDoubleValue / (rowAmount * IBoard.SQUARE_SIZE));
         display();
+*/
     }
 
-    @Override
-    public Marble view() {
-        return this;
-    }
+//    @Override
+//    public Marble view() {
+//        return this;
+//    }
 
     @Override
     public Marble withColor(ValidColor color) {
@@ -138,5 +144,10 @@ public class Marble extends Sprite implements IChild, IColor {
 
     private void setAnimationEffect(MoveEffect moveEffect) {
         moveEffect.setComponent(this);
+    }
+
+    @Override
+    public Marble view() {
+        return this;
     }
 }

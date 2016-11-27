@@ -62,7 +62,7 @@ public class QLevel extends Pane implements ILevel, IResizable {
         for (int i = 0; i < levelData.length; i++) squares.add(create(i));
 
         staticField.add(squares);
-        dynamicField.add(marbles);
+//        dynamicField.add(marbles);
         frame.setMarble(marbles.get(0));
     }
 // TODO
@@ -94,8 +94,12 @@ public class QLevel extends Pane implements ILevel, IResizable {
     }
 
     private Square createBallAndMarble(ValidColor color, int col, int row) {
-        marbles.add(marble().withAddress(col,row).withColor(color));
-        return ball();
+//        marbles.add(marble().withAddress(col,row).withColor(color));
+        Marble marble = marble().withAddress(col,row).withColor(color);
+        marbles.add(marble);
+        Square ball = ball();
+        ball.getChildren().add(marble);
+        return ball;
     }
 
     @Lookup("empty") public Square empty() { return null; }
@@ -112,7 +116,13 @@ public class QLevel extends Pane implements ILevel, IResizable {
     @Override
     public void moveBall(int from, int to, boolean toLoose) {
         frame.show(false);
-        frame.getMarble().go(to%colAmount, to/colAmount, toLoose);
+        Marble marble = frame.getMarble();
+        int col = marble.getCol();
+        int row = marble.getRow();
+        Square square = squares.get((row-1) * colAmount + col);
+        square.getChildren().remove(marble);
+        dynamicField.getContainer().getChildren().add(marble);
+        marble.go(to%colAmount, to/colAmount, toLoose);
     }
 
     @Override
