@@ -18,7 +18,7 @@ import org.torquemada.q.model.contract.ValidColor;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.IColor;
-import org.torquemada.q.view.impl.QAnimationTimer;
+import org.torquemada.q.view.impl.effect.MoveEffect;
 
 /**
  * Created by torquemada on 13.11.16.
@@ -30,8 +30,6 @@ public class Marble extends Sprite implements IChild, IColor {
     private int col, row;
     @Autowired
     private IEngine engine;
-    @Autowired
-    private QAnimationTimer timer;
     @Autowired
     private SelectingFrame frame;
 
@@ -117,7 +115,28 @@ public class Marble extends Sprite implements IChild, IColor {
     }
 
     public void go(int col, int row, boolean toLoose) {
-        timer.calculate(this, toLoose, col, row);
-        timer.start();
+        int from = getRow() * engine.getColAmount() + getCol();
+        int to = row * engine.getColAmount() + col;
+
+        Vector2D target = new Vector2D(col * getWidth() * getScaleX() + getWidth() * getScaleX() / 2,
+                row * getHeight()  * getScaleY() + getHeight()  * getScaleY() / 2);
+        MoveEffect moveEffect = new MoveEffect(getLocation(), target, 1000);
+        setAnimationEffect(moveEffect);
+        moveEffect.start();
+        moveEffect.setCallback(() -> {
+            if (toLoose) {
+                engine.ballInLoose(from, to);
+                frame.select(false);
+                setVisible(false);
+            }
+            this.col = col;
+            this.row = row;
+            setLocation(target.x, target.y);
+            frame.show(true);
+        });
+    }
+
+    private void setAnimationEffect(MoveEffect moveEffect) {
+        moveEffect.setComponent(this);
     }
 }

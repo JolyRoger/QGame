@@ -54,7 +54,4 @@ public class Config {
 
     @Bean
     public EventHandler<KeyEvent> eventHandler() { return new QEventHandler(); }
-
-    @Bean
-    public QAnimationTimer timer() { return new QAnimationTimer(); }
 }

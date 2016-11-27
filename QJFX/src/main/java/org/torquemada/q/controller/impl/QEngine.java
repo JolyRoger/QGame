@@ -1,5 +1,6 @@
 package org.torquemada.q.controller.impl;
 
+import javafx.application.Platform;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -72,6 +73,7 @@ public class QEngine implements IEngine {
 
     @Override
     public void exit() {
+        Platform.exit();
         System.exit(0);
     }
 

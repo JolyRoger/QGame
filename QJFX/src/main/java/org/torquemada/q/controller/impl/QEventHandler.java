@@ -37,6 +37,8 @@ public class QEventHandler implements EventHandler<KeyEvent> {
                 engine.notifyLeft();
             } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                 engine.notifyRight();
+            } else if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                engine.exit();
             }
             keyEvent.consume();
         }
