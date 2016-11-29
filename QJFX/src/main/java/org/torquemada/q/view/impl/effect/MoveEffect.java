@@ -4,6 +4,8 @@ import javafx.animation.AnimationTimer;
 import org.torquemada.q.controller.animation.Sprite;
 import org.torquemada.q.controller.animation.Vector2D;
 
+import java.util.function.BiConsumer;
+
 /**
  * Created by torquemada on 27.11.16.
  * Effect, moves a sprite to a position.
@@ -67,6 +69,7 @@ public class MoveEffect {
     }
 
     public void setCallback(Runnable callback) {
+//    public void setCallback(BiConsumer<Integer, Integer> callback) {
         this.callback = callback;
     }
 }

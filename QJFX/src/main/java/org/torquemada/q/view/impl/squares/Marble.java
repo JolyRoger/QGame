@@ -5,6 +5,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -15,11 +16,13 @@ import org.torquemada.q.controller.animation.Sprite;
 import org.torquemada.q.controller.animation.Vector2D;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.contract.ValidColor;
-import org.torquemada.q.view.contract.IAddress;
 import org.torquemada.q.view.contract.IBoard;
 import org.torquemada.q.view.contract.IChild;
 import org.torquemada.q.view.contract.IColor;
+import org.torquemada.q.view.impl.Dynamic;
 import org.torquemada.q.view.impl.effect.MoveEffect;
+
+import java.util.List;
 
 /**
  * Created by torquemada on 13.11.16.
@@ -33,16 +36,18 @@ public class Marble extends Sprite implements IChild, IColor {
     private IEngine engine;
     @Autowired
     private SelectingFrame frame;
+    @Autowired
+    private Dynamic dynamic;
+    @Autowired
+    private List<Square> squares;
 
     public Marble() {
-        super(new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0),
-                IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE);
+        super(new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0), 0, 0);
     }
 
     @Override
     public Node createView(Paint color) {
         double location = (IBoard.SQUARE_SIZE - IBoard.MARBLE_SIZE) / 2;
-
         ImageView img = new ImageView(createMarbleImage(IBoard.MARBLE_SIZE, color));
         img.setX(location);
         img.setY(location);
@@ -52,12 +57,12 @@ public class Marble extends Sprite implements IChild, IColor {
     }
 
     public void select(boolean show) {
-//        if (show) {
-//            getChildren().add(frame.view());
-//            frame.view().toBack();
-//        } else {
-//            getChildren().remove(frame.view());
-//        }
+        if (show) {
+            getChildren().add(frame.view());
+            frame.view().toBack();
+        } else {
+            getChildren().remove(frame.view());
+        }
     }
 
     private Image createMarbleImage(double radius, Paint fill) {
@@ -83,35 +88,19 @@ public class Marble extends Sprite implements IChild, IColor {
 
     @Override
     public void recalculateWidth(Number newValue) {
-        System.out.println("w=" + newValue);
         double newDoubleValue = newValue.doubleValue();
-        setScaleX(newDoubleValue / IBoard.SQUARE_SIZE);
-/*
-        double newDoubleValue = newValue.doubleValue();
-        double squareWidth = newDoubleValue / colAmount;
-        double x = squareWidth * col + squareWidth / 2;
-        setLocation(x, getLocation().y);
+        double scaleX = newDoubleValue / IBoard.SQUARE_SIZE;
+        setScaleX(scaleX);
         display();
-*/
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
-        System.out.println("h=" + newValue);
         double newDoubleValue = newValue.doubleValue();
-        setScaleY(newDoubleValue / IBoard.SQUARE_SIZE);
-        /*
-        double squareHeight = newDoubleValue / rowAmount;
-        double y = squareHeight * row + squareHeight / 2;
-        setLocation(getLocation().x, y);
+        double scaleY = newDoubleValue / IBoard.SQUARE_SIZE;
+        setScaleY(scaleY);
         display();
-*/
     }
-
-//    @Override
-//    public Marble view() {
-//        return this;
-//    }
 
     @Override
     public Marble withColor(ValidColor color) {
@@ -124,8 +113,12 @@ public class Marble extends Sprite implements IChild, IColor {
         int from = getRow() * engine.getColAmount() + getCol();
         int to = row * engine.getColAmount() + col;
 
-        Vector2D target = new Vector2D(col * getWidth() * getScaleX() + getWidth() * getScaleX() / 2,
-                row * getHeight()  * getScaleY() + getHeight()  * getScaleY() / 2);
+        double targetX = col * (((Pane) getParent()).getWidth() / engine.getColAmount());
+        double targetY = row * (((Pane) getParent()).getHeight() / engine.getRowAmount());
+
+//        Vector2D target = new Vector2D(col * ((Pane) getParent()).getWidth() * getScaleX() + getWidth() * getScaleX() / 2,
+//                row * getHeight()  * getScaleY() + getHeight()  * getScaleY() / 2);
+        Vector2D target = new Vector2D(targetX, targetY);
         MoveEffect moveEffect = new MoveEffect(getLocation(), target, 1000);
         setAnimationEffect(moveEffect);
         moveEffect.start();
@@ -138,6 +131,8 @@ public class Marble extends Sprite implements IChild, IColor {
             this.col = col;
             this.row = row;
             setLocation(target.x, target.y);
+            dynamic.getContainer().getChildren().remove(this);
+            squares.get(row * engine.getRowAmount() + col).getChildren().add(this);
             frame.show(true);
         });
     }

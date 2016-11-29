@@ -59,9 +59,12 @@ public class QLevel extends Pane implements ILevel, IResizable {
         squares.clear();
         marbles.clear();
 
-        for (int i = 0; i < levelData.length; i++) squares.add(create(i));
+        for (int i = 0; i < levelData.length; i++) {
+            Square square = create(i);
+            squares.add(square);
+            staticField.add(square);
+        }
 
-        staticField.add(squares);
 //        dynamicField.add(marbles);
         frame.setMarble(marbles.get(0));
     }
@@ -121,7 +124,7 @@ public class QLevel extends Pane implements ILevel, IResizable {
         int row = marble.getRow();
         Square square = squares.get((row-1) * colAmount + col);
         square.getChildren().remove(marble);
-        dynamicField.getContainer().getChildren().add(marble);
+        dynamicField.add(marble);
         marble.go(to%colAmount, to/colAmount, toLoose);
     }
 

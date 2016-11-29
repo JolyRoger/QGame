@@ -31,8 +31,9 @@ public class Static implements IParent {
     }
 
     @Override
-    public void add(List<? extends IChild> children) {
-        children.forEach(square -> staticField.add(square.view(), square.getCol(), square.getRow()));
+    public void add(IChild square) {
+        staticField.add(square.view(), square.getCol(), square.getRow());
+//        children.forEach(square -> staticField.add(square.view(), square.getCol(), square.getRow()));
     }
 
     @Override

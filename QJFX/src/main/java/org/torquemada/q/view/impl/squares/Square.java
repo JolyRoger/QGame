@@ -34,13 +34,13 @@ public abstract class Square extends Pane implements IChild {
     }
 
     @Override
-    public void recalculateHeight(Number newValue) {
-        image.setFitHeight(newValue.doubleValue());
+    public void recalculateWidth(Number newValue) {
+        image.setFitWidth(newValue.doubleValue());
     }
 
     @Override
-    public void recalculateWidth(Number newValue) {
-        image.setFitWidth(newValue.doubleValue());
+    public void recalculateHeight(Number newValue) {
+        image.setFitHeight(newValue.doubleValue());
     }
 
     @Override

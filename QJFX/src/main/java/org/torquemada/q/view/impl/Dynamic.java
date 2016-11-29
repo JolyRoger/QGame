@@ -2,6 +2,7 @@ package org.torquemada.q.view.impl;
 
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.view.contract.*;
 import org.torquemada.q.view.impl.squares.Marble;
 
@@ -17,7 +18,11 @@ public class Dynamic implements IParent {
 
     private Pane dynamicField;
 
+    @Autowired
+    private IEngine engine;
+
     private List<? extends IChild> marbles;
+    private Marble marble;
 
     public Dynamic() {
         super();
@@ -43,8 +48,11 @@ public class Dynamic implements IParent {
     }
 
     @Override
-    public void add(List<? extends IChild> children) {
-        marbles = children;
-//        children.forEach(marble -> dynamicField.getChildren().add(marble.view()));
+    public void add(IChild child) {
+        this.marble = (Marble) child;
+        dynamicField.getChildren().add(marble.view());
+
+        marble.setLocation(dynamicField.getWidth() / engine.getColAmount(), dynamicField.getHeight() / engine.getRowAmount());
+        marble.display();
     }
 }

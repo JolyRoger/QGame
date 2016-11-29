@@ -12,7 +12,8 @@ import java.util.List;
  */
 public interface IParent extends IResizable {
     Pane getContainer();
-    void add(List<? extends IChild> children);
+//    void add(List<? extends IChild> children);
+    void add(IChild child);
     void recalculateWidth(Number newValue);
     void recalculateHeight(Number newValue);
 }
