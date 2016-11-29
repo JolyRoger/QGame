@@ -109,32 +109,16 @@ public class Marble extends Sprite implements IChild, IColor {
         return this;
     }
 
-    public void go(int col, int row, boolean toLoose) {
-        int from = getRow() * engine.getColAmount() + getCol();
-        int to = row * engine.getColAmount() + col;
+    public void go(int col, int row, Runnable callback) {
+        double width = ((Pane) getParent()).getWidth() / engine.getColAmount();
+        double height = ((Pane) getParent()).getHeight() / engine.getRowAmount();
 
-        double targetX = col * (((Pane) getParent()).getWidth() / engine.getColAmount());
-        double targetY = row * (((Pane) getParent()).getHeight() / engine.getRowAmount());
+        MoveEffect moveEffect = new MoveEffect(new Vector2D(getCol() * width, getRow() * height),
+                                               new Vector2D(   col   * width,    row   * height), 100);
 
-//        Vector2D target = new Vector2D(col * ((Pane) getParent()).getWidth() * getScaleX() + getWidth() * getScaleX() / 2,
-//                row * getHeight()  * getScaleY() + getHeight()  * getScaleY() / 2);
-        Vector2D target = new Vector2D(targetX, targetY);
-        MoveEffect moveEffect = new MoveEffect(getLocation(), target, 1000);
         setAnimationEffect(moveEffect);
+        moveEffect.setCallback(callback);
         moveEffect.start();
-        moveEffect.setCallback(() -> {
-            if (toLoose) {
-                engine.ballInLoose(from, to);
-                frame.select(false);
-                setVisible(false);
-            }
-            this.col = col;
-            this.row = row;
-            setLocation(target.x, target.y);
-            dynamic.getContainer().getChildren().remove(this);
-            squares.get(row * engine.getRowAmount() + col).getChildren().add(this);
-            frame.show(true);
-        });
     }
 
     private void setAnimationEffect(MoveEffect moveEffect) {

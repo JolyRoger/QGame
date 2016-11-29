@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.view.contract.*;
 import org.torquemada.q.view.impl.squares.Marble;
-
-import javax.xml.ws.soap.Addressing;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +31,11 @@ public class Dynamic implements IParent {
     @Override
     public void recalculateWidth(Number newValue) {
         dynamicField.setPrefWidth(newValue.doubleValue());
-//        marbles.forEach(marble -> marble.recalculateWidth(newValue));
     }
 
     @Override
     public void recalculateHeight(Number newValue) {
         dynamicField.setPrefHeight(newValue.doubleValue());
-//        marbles.forEach(marble -> marble.recalculateHeight(newValue));
     }
 
     @Override
@@ -49,10 +45,17 @@ public class Dynamic implements IParent {
 
     @Override
     public void add(IChild child) {
-        this.marble = (Marble) child;
-        dynamicField.getChildren().add(marble.view());
+        dynamicField.getChildren().add(child.view());
 
-        marble.setLocation(dynamicField.getWidth() / engine.getColAmount(), dynamicField.getHeight() / engine.getRowAmount());
-        marble.display();
+        double fromX = child.getCol() * dynamicField.getWidth() / engine.getColAmount();
+        double fromY = child.getRow() * dynamicField.getHeight() / engine.getRowAmount();
+
+        this.marble = (Marble) child;       // TODO: change to interface
+        marble.setLocation(fromX, fromY);
+    }
+
+    @Override
+    public void remove(IChild marble) {
+        dynamicField.getChildren().remove(marble.view());
     }
 }

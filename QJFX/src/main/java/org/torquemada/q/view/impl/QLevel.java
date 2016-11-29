@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.model.contract.SquareType;
 import org.torquemada.q.model.contract.ValidColor;
 import org.torquemada.q.view.contract.ILevel;
@@ -25,9 +26,10 @@ public class QLevel extends Pane implements ILevel, IResizable {
     private SelectingFrame frame;
     @Autowired @Qualifier("staticField")
     private IParent staticField;
-
     @Autowired @Qualifier("dynamicField")
     private IParent dynamicField;
+    @Autowired
+    private IEngine engine;
 
     @Override
     public void setDimension(int row, int col) {
@@ -65,7 +67,6 @@ public class QLevel extends Pane implements ILevel, IResizable {
             staticField.add(square);
         }
 
-//        dynamicField.add(marbles);
         frame.setMarble(marbles.get(0));
     }
 // TODO
@@ -97,7 +98,6 @@ public class QLevel extends Pane implements ILevel, IResizable {
     }
 
     private Square createBallAndMarble(ValidColor color, int col, int row) {
-//        marbles.add(marble().withAddress(col,row).withColor(color));
         Marble marble = marble().withAddress(col,row).withColor(color);
         marbles.add(marble);
         Square ball = ball();
@@ -120,12 +120,29 @@ public class QLevel extends Pane implements ILevel, IResizable {
     public void moveBall(int from, int to, boolean toLoose) {
         frame.show(false);
         Marble marble = frame.getMarble();
-        int col = marble.getCol();
-        int row = marble.getRow();
-        Square square = squares.get((row-1) * colAmount + col);
+        int toCol = to % colAmount;
+        int toRow = to / colAmount;
+        Square square = squares.get(from);
         square.getChildren().remove(marble);
+
         dynamicField.add(marble);
-        marble.go(to%colAmount, to/colAmount, toLoose);
+        marble.display();
+        marble.go(toCol, toRow, () -> {
+            dynamicField.remove(marble);
+            frame.show(true);
+            if (toLoose) {
+                engine.ballInLoose(from, to);
+                frame.select(false);
+                marble.setVisible(false);
+            } else {
+                marble.setCol(toCol);
+                marble.setRow(toRow);
+                squares.get(to).getChildren().add(marble);
+                marble.setLocation(0, 0);
+                marble.toFront();
+                marble.display();
+            }
+        });
     }
 
     @Override
