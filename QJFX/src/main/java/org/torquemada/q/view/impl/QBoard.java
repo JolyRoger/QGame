@@ -1,9 +1,11 @@
 package org.torquemada.q.view.impl;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,8 @@ public class QBoard implements IBoard, IResizable {
     public void initialize() {
         settingsPanel.init();
         stage = Starter.getStage();
-//        Resources.LevelData data = Resources.getLevelData(settingsPanel.getLevelNumber());
-        BorderPane root = new BorderPane();
 
+        BorderPane root = new BorderPane();
         root.setTop(settingsPanel.region());
         root.setCenter((QLevel) level);
 
@@ -43,17 +44,24 @@ public class QBoard implements IBoard, IResizable {
                 settingsPanel.region().getHeight()));
         scene.setOnKeyPressed(keyEventHandler);
         stage.setScene(scene);
+
+
         stage.show();
     }
 
     @Override
     public void assignLevel(int number, int row, int col, int[] levelData) {
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+
         level.setDimension(row, col);
         level.setLevelData(levelData);
         level.init();
 
         stage.setWidth(SQUARE_SIZE * col);
         stage.setHeight(SQUARE_SIZE * row + settingsPanel.region().getHeight());
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+
         recalculateWidth(SQUARE_SIZE * col);
         recalculateHeight(SQUARE_SIZE * row);
 
