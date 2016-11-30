@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.torquemada.q.controller.contract.IEngine;
 import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.ISettings;
+import org.torquemada.q.view.impl.squares.SelectingFrame;
 
 /**
  * Created by torquemada on 19.11.16.
@@ -21,11 +22,14 @@ public class QEventHandler implements EventHandler<KeyEvent> {
     private ISettings settingsPanel;
     @Autowired @Qualifier("staticField")
     private IParent staticField;
+    @Autowired
+    private SelectingFrame frame;
 
     @Override
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
             staticField.getContainer().requestFocus();
+            if (!frame.view().isVisible()) return;
 
             if (keyEvent.getCode() == KeyCode.SPACE) {
                 engine.notifySpace();
