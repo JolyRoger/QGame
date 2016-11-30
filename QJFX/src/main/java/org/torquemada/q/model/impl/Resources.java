@@ -79,6 +79,10 @@ public class Resources {
         }
     }
 
+    public static int getLevelCount() {
+        return levelMap.keySet().size();
+    }
+
     public static Integer[] getAvailableLevelNumbersAsIntegerArray() {
         return levelMap.keySet().stream().toArray(Integer[]::new);
     }

@@ -67,7 +67,7 @@ public class SettingsPanel extends AnchorPane implements ISettings, IRegion {
 
     @Override
     public void setNextLevelNumber() {
-        setLevelNumber(levelNumber+1);
+        if (levelNumber < Resources.getLevelCount()) setLevelNumber(levelNumber+1);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class SettingsPanel extends AnchorPane implements ISettings, IRegion {
 
     @Override
     public void setPrevLevelNumber() {
-        setLevelNumber(levelNumber-1);
+        if (levelNumber > 1) setLevelNumber(levelNumber-1);
     }
 
     @Override

@@ -57,13 +57,15 @@ public class QBoard implements IBoard, IResizable {
         level.setLevelData(levelData);
         level.init();
 
-        stage.setWidth(SQUARE_SIZE * col);
-        stage.setHeight(SQUARE_SIZE * row + settingsPanel.region().getHeight());
+        double stageWidth = SQUARE_SIZE * col;
+        double stageHeight = SQUARE_SIZE * row;
+        stage.setWidth(stageWidth);
+        stage.setHeight(stageHeight + settingsPanel.region().getHeight());
         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
         stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
 
-        recalculateWidth(SQUARE_SIZE * col);
-        recalculateHeight(SQUARE_SIZE * row);
+        recalculateWidth(stageWidth);
+        recalculateHeight(stageHeight - settingsPanel.region().getHeight() + 5);
 
         stage.setTitle("Q-Game. Level " + number);
     }
