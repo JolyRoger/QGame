@@ -132,7 +132,6 @@ public class QLevel extends Pane implements ILevel, IResizable {
             frame.show(true);
             if (toLoose) {
                 engine.ballInLoose(from, to);
-                frame.select(false);
                 marble.setVisible(false);
             } else {
                 marble.setCol(toCol);

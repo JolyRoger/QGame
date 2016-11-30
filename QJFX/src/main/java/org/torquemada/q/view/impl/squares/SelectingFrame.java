@@ -23,12 +23,12 @@ public class SelectingFrame implements IChild {
 
     public SelectingFrame() {
         sf = new Canvas(IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE);
-        select(select);
     }
 
     public void setMarble(Marble marble) {
         if (this.marble != null) this.marble.select(false);
         marble.select(true);
+        select(false);
         this.marble = marble;
     }
 
@@ -36,6 +36,7 @@ public class SelectingFrame implements IChild {
         select = isRed;
         GraphicsContext g = sf.getGraphicsContext2D();
         g.setLineWidth(10);
+        g.clearRect(0, 0, sf.getWidth(), sf.getHeight());
         g.setStroke(isRed ? Color.RED : Color.WHITE);
         g.strokeRoundRect(0,0,IBoard.SQUARE_SIZE, IBoard.SQUARE_SIZE, 25, 25);
     }
