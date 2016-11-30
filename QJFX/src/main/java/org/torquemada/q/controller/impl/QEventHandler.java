@@ -4,7 +4,9 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.torquemada.q.controller.contract.IEngine;
+import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.ISettings;
 
 /**
@@ -17,10 +19,14 @@ public class QEventHandler implements EventHandler<KeyEvent> {
     private IEngine engine;
     @Autowired
     private ISettings settingsPanel;
+    @Autowired @Qualifier("staticField")
+    private IParent staticField;
 
     @Override
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+            staticField.getContainer().requestFocus();
+
             if (keyEvent.getCode() == KeyCode.SPACE) {
                 engine.notifySpace();
             } else if (keyEvent.getCode() == KeyCode.PAGE_UP) {
