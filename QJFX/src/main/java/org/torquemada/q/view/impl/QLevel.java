@@ -11,7 +11,9 @@ import org.torquemada.q.model.contract.ValidColor;
 import org.torquemada.q.view.contract.ILevel;
 import org.torquemada.q.view.contract.IParent;
 import org.torquemada.q.view.contract.IResizable;
+import org.torquemada.q.view.impl.effect.ScaleEffect;
 import org.torquemada.q.view.impl.squares.*;
+
 import java.util.List;
 
 @Component
@@ -128,12 +130,20 @@ public class QLevel extends Pane implements ILevel, IResizable {
         dynamicField.add(marble);
         marble.display();
         marble.go(toCol, toRow, () -> {
-            dynamicField.remove(marble);
-            frame.show(true);
             if (toLoose) {
-                engine.ballInLoose(from, to);
-                marble.setVisible(false);
+                ScaleEffect scaleEffect = new ScaleEffect(1.0, 0.0, 1000);
+                marble.setAnimationEffect(scaleEffect);
+                scaleEffect.setCallback(() -> {
+                    dynamicField.remove(marble);
+                    frame.show(true);
+                    engine.ballInLoose(from, to);
+                    marble.setVisible(false);
+                });
+                scaleEffect.start();
+
             } else {
+                dynamicField.remove(marble);
+                frame.show(true);
                 marble.setCol(toCol);
                 marble.setRow(toRow);
                 squares.get(to).getChildren().add(marble);

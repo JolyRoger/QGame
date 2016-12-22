@@ -1,18 +1,13 @@
 package org.torquemada.q.view.impl.effect;
 
 import javafx.animation.AnimationTimer;
-import org.torquemada.q.controller.animation.Sprite;
 import org.torquemada.q.controller.animation.Vector2D;
 
 /**
  * Created by torquemada on 27.11.16.
  * Effect, moves a sprite to a position.
  */
-public class MoveEffect {
-
-    private Sprite component;
-    private AnimationTimer timer;
-    private Runnable callback;
+public class MoveEffect extends AbstractEffect {
 
     public MoveEffect(Vector2D from, Vector2D to, long duration) {
 
@@ -55,20 +50,4 @@ public class MoveEffect {
         };
     }
 
-    public void start() {
-        timer.start();
-    }
-
-    public void stop() {
-        timer.stop();
-        callback.run();
-    }
-
-    public void setComponent(Sprite component) {
-        this.component = component;
-    }
-
-    public void setCallback(Runnable callback) {
-        this.callback = callback;
-    }
 }

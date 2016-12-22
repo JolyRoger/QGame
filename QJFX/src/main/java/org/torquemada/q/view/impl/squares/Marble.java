@@ -121,10 +121,6 @@ public class Marble extends Sprite implements IChild, IColor {
         moveEffect.start();
     }
 
-    private void setAnimationEffect(MoveEffect moveEffect) {
-        moveEffect.setComponent(this);
-    }
-
     @Override
     public Marble view() {
         return this;
