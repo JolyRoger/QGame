@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import org.torquemada.q.view.impl.effect.AbstractEffect;
 
 public abstract class Sprite extends Region {
 
@@ -139,6 +140,10 @@ public abstract class Sprite extends Region {
     public void setLocation( double x, double y) {
         location.x = x;
         location.y = y;
+    }
+
+    public void setAnimationEffect(AbstractEffect effect) {
+        effect.setComponent(this);
     }
 
     public void setLocationOffset( double x, double y) {

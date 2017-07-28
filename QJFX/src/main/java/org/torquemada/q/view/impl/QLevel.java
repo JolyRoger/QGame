@@ -131,7 +131,7 @@ public class QLevel extends Pane implements ILevel, IResizable {
         marble.display();
         marble.go(toCol, toRow, () -> {
             if (toLoose) {
-                ScaleEffect scaleEffect = new ScaleEffect(1.0, 0.0, 1000);
+                ScaleEffect scaleEffect = new ScaleEffect(1.0, 0.0, 100);
                 marble.setAnimationEffect(scaleEffect);
                 scaleEffect.setCallback(() -> {
                     dynamicField.remove(marble);

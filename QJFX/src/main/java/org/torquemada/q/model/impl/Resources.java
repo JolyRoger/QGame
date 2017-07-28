@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
 /**
  * Created by torquemada on 6/5/16.
  * Load and get level map.
  */
+// TODO: make normal load level
 public class Resources {
 
     private static HashMap<Integer, LevelData> levelMap = new HashMap<>();

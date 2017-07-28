@@ -45,7 +45,6 @@ public class QBoard implements IBoard, IResizable {
         scene.setOnKeyPressed(keyEventHandler);
         stage.setScene(scene);
 
-
         stage.show();
     }
 

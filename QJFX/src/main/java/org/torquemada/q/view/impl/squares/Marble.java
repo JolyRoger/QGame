@@ -40,6 +40,10 @@ public class Marble extends Sprite implements IChild, IColor {
     private Dynamic dynamic;
     @Autowired
     private List<Square> squares;
+    @Getter
+    private double wwidth;
+    @Getter
+    private double hheight;
 
     public Marble() {
         super(new Vector2D(0,0), new Vector2D(10,10), new Vector2D(0,0), 0, 0);
@@ -91,6 +95,7 @@ public class Marble extends Sprite implements IChild, IColor {
         double newDoubleValue = newValue.doubleValue();
         double scaleX = newDoubleValue / IBoard.SQUARE_SIZE;
         setScaleX(scaleX);
+        wwidth = newDoubleValue;
         display();
     }
 
@@ -99,6 +104,7 @@ public class Marble extends Sprite implements IChild, IColor {
         double newDoubleValue = newValue.doubleValue();
         double scaleY = newDoubleValue / IBoard.SQUARE_SIZE;
         setScaleY(scaleY);
+        hheight = newDoubleValue;
         display();
     }
 
