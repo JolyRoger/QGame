@@ -1,0 +1,1 @@
+"Q" game was initially released on SonyEricsson mobile phones. It represents logic game with balls and holes where you should  roll the balls up. 

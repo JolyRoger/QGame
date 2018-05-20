@@ -39,7 +39,6 @@ public class ScaleEffect extends AbstractEffect {
                 double stopScaleValue = (endScale - newScale) / newDeltaScale;
                 stopScale = Double.isNaN(stopScaleValue) || stopScaleValue < 0;
                 newScale = stopScale ? endScale : newScale;
-//                component.setPrefWidth(64);
 
                 double origWidth = ((Marble) component).getWwidth();
                 double origHeight = ((Marble) component).getHheight();
@@ -50,7 +49,6 @@ public class ScaleEffect extends AbstractEffect {
                 double nx = x + deltaWidth;
                 double ny = y + deltaHeight;
 
-                System.out.format("origWidth=%.2f\tx=%.2f\tnx=%.2f\tscale=%.3f\twidth=%.3f\tdelta=%.2f\n", origWidth, x, nx, newScale, currWidth, deltaWidth);
                 component.setLocation(nx, ny);
                 component.setScaleX(newScale);
                 component.setScaleY(newScale);
