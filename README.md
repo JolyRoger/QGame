@@ -16,11 +16,17 @@ Also [Java 8](https://java.com/ru/download/) have to be installed.
 
 ### Running
 
-Then go to the game directory and run it with gradle:
-
+Then go to the game directory: 
 ```
 > cd QGame
+```
+and run it with gradle:
+```
 > gradle run
+```
+or run it from already built jar file: 
+```
+> java -jar q-game.jar
 ```
 
 ### Control
