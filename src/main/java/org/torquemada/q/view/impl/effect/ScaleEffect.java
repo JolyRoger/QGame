@@ -29,7 +29,6 @@ public class ScaleEffect extends AbstractEffect {
                 }
                 if (stopScale) {
                     ScaleEffect.this.stop();
-                    System.out.println();
                     return;
                 }
 

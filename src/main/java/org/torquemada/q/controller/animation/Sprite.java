@@ -68,9 +68,7 @@ public abstract class Sprite extends Region {
     public void move() {
 
         // set velocity depending on acceleration
-//        System.out.println("V=" + velocity.x + ":" + velocity.y);
         velocity.add(acceleration);
-//        System.out.println("V=" + velocity.x + ":" + velocity.y);
 
         // limit velocity to max speed
         velocity.limit(maxSpeed);
