@@ -23,7 +23,7 @@ Then go to the game directory and run it with gradle:
 > gradle run
 ```
 
-###Control
+### Control
 
 Select a ball in white frame with "Space" key. The frame becomes red. Move ball in red frame using arrow keys. When you want to release the ball press "Space" again. The red frame turns back to white. Move the frame over the balls till the frame is on ball you want to move. When you roll up a ball into the proper hole the frame automatically is set on a next ball. The goal of Q game is rolling up all the balls to appropriate holes.
 
