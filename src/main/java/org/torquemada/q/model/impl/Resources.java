@@ -2,8 +2,11 @@ package org.torquemada.q.model.impl;
 
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
-import java.io.File;
-import java.io.IOException;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 /**
@@ -29,9 +32,12 @@ public class Resources {
         }
     }
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows(Exception.class)
     private static List<String> readStringLevels() {
-        return FileUtils.readLines(new File("src/main/resources/standard.lev"), "UTF-8");
+        ClassLoader classLoader = Resources.class.getClassLoader();
+        InputStream levels = classLoader.getResourceAsStream("standard.lev");
+        LineNumberReader reader = new LineNumberReader(new BufferedReader(new InputStreamReader(levels)));
+        return IOUtils.readLines(levels, "UTF-8");
     }
 
     public static void loadResources() {

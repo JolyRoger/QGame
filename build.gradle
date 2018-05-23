@@ -30,4 +30,3 @@ jar {
     }
     archiveName = 'q-game.jar'
 }
-
