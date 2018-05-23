@@ -39,7 +39,7 @@ public class QEngine implements IEngine {
 
     @Override
     public void run() {
-        currentLevel = 63;
+        currentLevel = 1;
         board.initialize();
         reloadLevel();
     }

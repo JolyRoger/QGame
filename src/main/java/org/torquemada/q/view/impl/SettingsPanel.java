@@ -32,7 +32,7 @@ public class SettingsPanel extends AnchorPane implements ISettings, IRegion {
 
     @Override
     public void init() {
-        Button reloadBtn = new Button("Перезагрузи уровень");
+        Button reloadBtn = new Button("Reload Level");
         reloadBtn.setId(SET_LEVEL_ID);
         reloadBtn.setFocusTraversable(false);
         reloadBtn.setOnAction(event -> {
