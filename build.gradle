@@ -10,8 +10,8 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 mainClassName = "org.torquemada.q.Starter"
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 21
+targetCompatibility = 21
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -19,7 +19,7 @@ repositories {
 }
 
 javafx {
-    version = "11.0.2"
+    version = "21.0.1"
     modules = [ 'javafx.controls' ]
 }
 
@@ -41,5 +41,5 @@ jar {
     manifest {
         attributes "Main-Class": "org.torquemada.q.Starter"
     }
-    archiveBaseName = 'q-game.jar'
+    archiveBaseName = 'q-game'
 }
