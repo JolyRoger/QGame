@@ -2,18 +2,21 @@
 
 "Q" game was initially released on SonyEricsson mobile phones. It represents logic game with balls and holes to where you should roll the balls up. This is "one more" version of the game written in Java.
 
-## I just want to run it as fast as possible
+## I just want to run it
 
 On Linux machine you can run the game docker image with the command:
-> xhost + && \
-> docker run \
-> -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
-> --name q-game \
-> daniilmonakhov/q-game:latest && \
-> xhost -
+```
+xhost + && \
+docker run \
+    -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
+    --name q-game \
+    daniilmonakhov/q-game:latest && \
+xhost -
+```
 
-Remember, as far as the game utilizes UI interface, all the parameters and command `xhost`, allowing and disallowing the application to use your host X settings, are important.
+You must install `xhost` first.
 
+Remember, as far as the game utilizes UI interface, all the parameters and command `xhost` (must be installed), allowing and disallowing the application to use your host X settings, are important.
 ## Getting Started
 
 Just download the game:
